@@ -102,8 +102,8 @@ print(f"\nNew Feature Vectors Matrix X_1 (n x d):\n{X_1}")
 def classify_output(X_L, classification_threshold):
     n, d = X_L.shape
 
-    # get the first element of the last row
-    output_value = X_L[n-1, 0]
+    # get the first element of the first row
+    output_value = X_L[0, 0]
 
     if output_value > classification_threshold:
         return True # output is True if X_L[n, 1] > threshold
