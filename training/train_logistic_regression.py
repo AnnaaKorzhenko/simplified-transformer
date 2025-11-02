@@ -72,7 +72,9 @@ def load_all_datasets(dataset_dir: str = "generated_formulas_datasets") -> List[
     Returns list of (formula_id, formula, dataset, alphabet) tuples.
     """
     if not os.path.isabs(dataset_dir):
-        dataset_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), dataset_dir)
+        # Go up one level from training/ to root directory
+        root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        dataset_dir = os.path.join(root_dir, dataset_dir)
     
     results = []
     
@@ -359,7 +361,9 @@ def main():
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
     
-    roc_plot_path = 'roc_curve_combined_dataset.png'
+    # Save to root directory
+    root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    roc_plot_path = os.path.join(root_dir, 'roc_curve_combined_dataset.png')
     plt.savefig(roc_plot_path, dpi=300, bbox_inches='tight')
     print(f"  Saved ROC curve plot to: {roc_plot_path}")
     plt.close()
@@ -386,7 +390,9 @@ def main():
         'classification_report': result['classification_report']
     }
     
-    results_path = 'logistic_regression_combined_results.json'
+    # Save to root directory
+    root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    results_path = os.path.join(root_dir, 'logistic_regression_combined_results.json')
     with open(results_path, 'w') as f:
         json.dump(results_summary, f, indent=2)
     print(f"\nSaved detailed results to: {results_path}")

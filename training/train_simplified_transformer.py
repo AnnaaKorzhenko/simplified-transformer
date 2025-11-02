@@ -501,7 +501,9 @@ def train_transformer_soft(model: SimplifiedTransformer, X_train: List[List[str]
 def load_all_datasets(dataset_dir: str = "generated_formulas_datasets"):
     """Load all datasets"""
     if not os.path.isabs(dataset_dir):
-        dataset_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), dataset_dir)
+        # Go up one level from training/ to root directory
+        root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        dataset_dir = os.path.join(root_dir, dataset_dir)
     
     results = []
     formulas_dir = os.path.join(dataset_dir, "formulas")
@@ -669,14 +671,15 @@ def main():
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
     
-    # Save results with appropriate filename
+    # Save results with appropriate filename (to root directory)
+    root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     if use_soft:
-        roc_path = 'roc_curve_simplified_transformer_softmax.png'
-        results_path = 'simplified_transformer_softmax_results.json'
+        roc_path = os.path.join(root_dir, 'roc_curve_simplified_transformer_softmax.png')
+        results_path = os.path.join(root_dir, 'simplified_transformer_softmax_results.json')
         title_suffix = 'with Softmax'
     else:
-        roc_path = 'roc_curve_simplified_transformer_hard.png'
-        results_path = 'simplified_transformer_hard_results.json'
+        roc_path = os.path.join(root_dir, 'roc_curve_simplified_transformer_hard.png')
+        results_path = os.path.join(root_dir, 'simplified_transformer_hard_results.json')
         title_suffix = 'with Hard Attention'
     
     plt.title(f'ROC Curve - Simplified Transformer {title_suffix} (Combined Dataset)', fontsize=14, fontweight='bold')

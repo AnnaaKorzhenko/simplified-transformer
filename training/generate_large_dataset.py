@@ -26,8 +26,9 @@ num_conjunctions = 2
 sequence_length = 10
 seed = 42
 
-# Create output directory
-output_dir = "large_datasets"
+# Create output directory (in root, one level up from training/)
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+output_dir = os.path.join(root_dir, "large_datasets")
 os.makedirs(output_dir, exist_ok=True)
 os.makedirs(os.path.join(output_dir, "formulas"), exist_ok=True)
 os.makedirs(os.path.join(output_dir, "datasets"), exist_ok=True)
