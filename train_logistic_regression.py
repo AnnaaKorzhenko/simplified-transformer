@@ -23,14 +23,14 @@ def extract_features(sequence: List[str], alphabet: List[str], sequence_length: 
     Extract features from a sequence for logistic regression.
     
     Features:
-    1. Which symbol appears at each position
+    1. Which symbol appears at each position (one-hot encoding)
     2. Frequency counts (how many times each symbol appears)
-    3. First occurrence positions
-    4. Last occurrence positions
+    3. First occurrence positions (normalized)
+    4. Last occurrence positions (normalized)
     """
     features = []
     
-    # 1. Position-based features
+    # 1. Position-based features: one-hot encoding for each position
     for pos in range(sequence_length):
         position_features = [0.0] * len(alphabet)
         if pos < len(sequence):
@@ -39,11 +39,11 @@ def extract_features(sequence: List[str], alphabet: List[str], sequence_length: 
                 position_features[idx] = 1.0
         features.extend(position_features)
     
-    # 2. Frequency counts
+    # 2. Frequency counts: how many times each symbol appears
     symbol_counts = [sequence.count(symbol) for symbol in alphabet]
     features.extend(symbol_counts)
     
-    # 3. First occurrence positions
+    # 3. First occurrence positions (normalized)
     first_positions = []
     for symbol in alphabet:
         try:
@@ -53,7 +53,7 @@ def extract_features(sequence: List[str], alphabet: List[str], sequence_length: 
         first_positions.append(float(first_pos) / sequence_length)  # Normalize
     features.extend(first_positions)
     
-    # 4. Last occurrence positions
+    # 4. Last occurrence positions (normalized)
     last_positions = []
     for symbol in alphabet:
         try:

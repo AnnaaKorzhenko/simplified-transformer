@@ -1,8 +1,12 @@
 """
-Generates 15 formulas with alphabet_size=5, each with 20 positive sequences
+Generate large dataset for simplified transformer training:
+- 50 formulas
+- Alphabet size 20
+- 50 positive sequences per formula
+- 50 negative sequences per formula (for balanced dataset)
 """
 
-from formula_generator import (
+from ltl_formulas.formula_generator import (
     FormulaGenerator,
     SyntheticDataGenerator,
     FormulaEvaluator,
@@ -13,21 +17,23 @@ import json
 import os
 
 # Parameters
-alphabet_size = 5
-num_formulas = 15
-num_positive = 20
-num_negative = 20  # Also generate negative examples for balanced datasets
-num_disjunctions = 2  # Default values
-num_conjunctions = 2  # Default values
-sequence_length = 10  # Default sequence length
+alphabet_size = 20
+num_formulas = 50
+num_positive = 50
+num_negative = 50  
+num_disjunctions = 2
+num_conjunctions = 2
+sequence_length = 10
 seed = 42
 
 # Create output directory
-output_dir = "generated_formulas_datasets"
+output_dir = "large_datasets"
 os.makedirs(output_dir, exist_ok=True)
+os.makedirs(os.path.join(output_dir, "formulas"), exist_ok=True)
+os.makedirs(os.path.join(output_dir, "datasets"), exist_ok=True)
 
 print("=" * 70)
-print(f"Generating {num_formulas} Formulas and Datasets")
+print(f"Generating Large Dataset for Simplified Transformer")
 print("=" * 70)
 print(f"Parameters:")
 print(f"  Alphabet size: {alphabet_size}")
@@ -55,8 +61,8 @@ for formula_id in range(1, num_formulas + 1):
     )
     
     formula = formula_gen.generate_formula()
-    print(f"\nAlphabet: {formula_gen.alphabet}")
-    print(f"Formula:\n{formula_gen.formula_to_string(formula)}")
+    print(f"Alphabet: {formula_gen.alphabet}")
+    print(f"Formula: {formula_gen.formula_to_string(formula)}")
     
     # Generate dataset
     data_gen = SyntheticDataGenerator(
@@ -89,14 +95,8 @@ for formula_id in range(1, num_formulas + 1):
     print(f"  Negative (label 0): {negative_count}")
     print(f"  Accuracy: {accuracy:.2f}%")
     
-    # Create subdirectories for formulas and datasets
-    formulas_dir = os.path.join(output_dir, "formulas")
-    datasets_dir = os.path.join(output_dir, "datasets")
-    os.makedirs(formulas_dir, exist_ok=True)
-    os.makedirs(datasets_dir, exist_ok=True)
-    
     # Save formula
-    formula_filename = os.path.join(formulas_dir, f"formula_{formula_id}.json")
+    formula_filename = os.path.join(output_dir, "formulas", f"formula_{formula_id}.json")
     save_formula_json(formula, formula_filename, metadata={
         "formula_id": formula_id,
         "alphabet_size": alphabet_size,
@@ -109,7 +109,7 @@ for formula_id in range(1, num_formulas + 1):
     })
     
     # Save dataset
-    dataset_filename = os.path.join(datasets_dir, f"dataset_{formula_id}.csv")
+    dataset_filename = os.path.join(output_dir, "datasets", f"dataset_{formula_id}.csv")
     save_dataset_csv(dataset, dataset_filename)
     
     print(f"\n  Saved formula to: {formula_filename}")
@@ -152,19 +152,14 @@ print(f"All files saved in directory: {output_dir}/")
 print(f"Summary saved to: {summary_filename}")
 print(f"\nFile structure:")
 print(f"  {output_dir}/")
-print(f"    formula_1.json, dataset_1.csv")
-print(f"    formula_2.json, dataset_2.csv")
-print(f"    ...")
-print(f"    formulas/")
-print(f"      formula_1.json, formula_2.json, ..., formula_{num_formulas}.json")
-print(f"    datasets/")
-print(f"      dataset_1.csv, dataset_2.csv, ..., dataset_{num_formulas}.csv")
+print(f"    formulas/formula_1.json ... formula_{num_formulas}.json")
+print(f"    datasets/dataset_1.csv ... dataset_{num_formulas}.csv")
 print(f"    summary.json")
 
-# Display first few results
-print(f"\nFirst 3 formulas:")
-for result in all_results[:3]:
-    print(f"\n  Formula {result['formula_id']}:")
-    print(f"    {result['formula']}")
-    print(f"    Sequences: {result['positive_count']} positive, {result['negative_count']} negative")
+# Display statistics
+total_sequences = sum(r['total_sequences'] for r in all_results)
+avg_accuracy = sum(r['accuracy'] for r in all_results) / len(all_results)
+print(f"\nOverall Statistics:")
+print(f"  Total sequences: {total_sequences}")
+print(f"  Average dataset accuracy: {avg_accuracy:.2f}%")
 
