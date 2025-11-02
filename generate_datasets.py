@@ -89,8 +89,14 @@ for formula_id in range(1, num_formulas + 1):
     print(f"  Negative (label 0): {negative_count}")
     print(f"  Accuracy: {accuracy:.2f}%")
     
+    # Create subdirectories for formulas and datasets
+    formulas_dir = os.path.join(output_dir, "formulas")
+    datasets_dir = os.path.join(output_dir, "datasets")
+    os.makedirs(formulas_dir, exist_ok=True)
+    os.makedirs(datasets_dir, exist_ok=True)
+    
     # Save formula
-    formula_filename = os.path.join(output_dir, f"formula_{formula_id}.json")
+    formula_filename = os.path.join(formulas_dir, f"formula_{formula_id}.json")
     save_formula_json(formula, formula_filename, metadata={
         "formula_id": formula_id,
         "alphabet_size": alphabet_size,
@@ -103,7 +109,7 @@ for formula_id in range(1, num_formulas + 1):
     })
     
     # Save dataset
-    dataset_filename = os.path.join(output_dir, f"dataset_{formula_id}.csv")
+    dataset_filename = os.path.join(datasets_dir, f"dataset_{formula_id}.csv")
     save_dataset_csv(dataset, dataset_filename)
     
     print(f"\n  Saved formula to: {formula_filename}")
@@ -149,7 +155,10 @@ print(f"  {output_dir}/")
 print(f"    formula_1.json, dataset_1.csv")
 print(f"    formula_2.json, dataset_2.csv")
 print(f"    ...")
-print(f"    formula_{num_formulas}.json, dataset_{num_formulas}.csv")
+print(f"    formulas/")
+print(f"      formula_1.json, formula_2.json, ..., formula_{num_formulas}.json")
+print(f"    datasets/")
+print(f"      dataset_1.csv, dataset_2.csv, ..., dataset_{num_formulas}.csv")
 print(f"    summary.json")
 
 # Display first few results
