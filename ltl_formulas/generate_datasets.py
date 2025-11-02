@@ -1,0 +1,170 @@
+"""
+Generates 15 formulas with alphabet_size=5, each with 20 positive sequences
+"""
+
+from formula_generator import (
+    FormulaGenerator,
+    SyntheticDataGenerator,
+    FormulaEvaluator,
+    save_dataset_csv,
+    save_formula_json
+)
+import json
+import os
+
+# Parameters
+alphabet_size = 5
+num_formulas = 15
+num_positive = 20
+num_negative = 20  # Also generate negative examples for balanced datasets
+num_disjunctions = 2  # Default values
+num_conjunctions = 2  # Default values
+sequence_length = 10  # Default sequence length
+seed = 42
+
+# Create output directory
+output_dir = "generated_formulas_datasets"
+os.makedirs(output_dir, exist_ok=True)
+
+print("=" * 70)
+print(f"Generating {num_formulas} Formulas and Datasets")
+print("=" * 70)
+print(f"Parameters:")
+print(f"  Alphabet size: {alphabet_size}")
+print(f"  Number of formulas: {num_formulas}")
+print(f"  Positive sequences per formula: {num_positive}")
+print(f"  Negative sequences per formula: {num_negative}")
+print(f"  Sequence length: {sequence_length}")
+print(f"  Disjunctions per formula: {num_disjunctions}")
+print(f"  Conjunctions per disjunction: {num_conjunctions}")
+print("=" * 70)
+
+all_results = []
+
+for formula_id in range(1, num_formulas + 1):
+    print(f"\n{'='*70}")
+    print(f"Formula {formula_id}/{num_formulas}")
+    print(f"{'='*70}")
+    
+    # Generate formula
+    formula_gen = FormulaGenerator(
+        alphabet_size=alphabet_size,
+        num_disjunctions=num_disjunctions,
+        num_conjunctions=num_conjunctions,
+        seed=seed + formula_id
+    )
+    
+    formula = formula_gen.generate_formula()
+    print(f"\nAlphabet: {formula_gen.alphabet}")
+    print(f"Formula:\n{formula_gen.formula_to_string(formula)}")
+    
+    # Generate dataset
+    data_gen = SyntheticDataGenerator(
+        alphabet=formula_gen.alphabet,
+        seed=seed + formula_id
+    )
+    
+    print(f"\nGenerating dataset...")
+    dataset = data_gen.generate_dataset(
+        formula=formula,
+        sequence_length=sequence_length,
+        num_positive=num_positive,
+        num_negative=num_negative,
+        seed=seed + formula_id
+    )
+    
+    # Verify correctness
+    positive_count = sum(1 for _, label in dataset if label == 1)
+    negative_count = sum(1 for _, label in dataset if label == 0)
+    
+    correct = sum(
+        1 for seq, label in dataset
+        if FormulaEvaluator.evaluate_formula(seq, formula) == bool(label)
+    )
+    accuracy = correct / len(dataset) * 100
+    
+    print(f"\nDataset Statistics:")
+    print(f"  Total sequences: {len(dataset)}")
+    print(f"  Positive (label 1): {positive_count}")
+    print(f"  Negative (label 0): {negative_count}")
+    print(f"  Accuracy: {accuracy:.2f}%")
+    
+    # Create subdirectories for formulas and datasets
+    formulas_dir = os.path.join(output_dir, "formulas")
+    datasets_dir = os.path.join(output_dir, "datasets")
+    os.makedirs(formulas_dir, exist_ok=True)
+    os.makedirs(datasets_dir, exist_ok=True)
+    
+    # Save formula
+    formula_filename = os.path.join(formulas_dir, f"formula_{formula_id}.json")
+    save_formula_json(formula, formula_filename, metadata={
+        "formula_id": formula_id,
+        "alphabet_size": alphabet_size,
+        "num_disjunctions": num_disjunctions,
+        "num_conjunctions": num_conjunctions,
+        "alphabet": formula_gen.alphabet,
+        "sequence_length": sequence_length,
+        "num_positive": positive_count,
+        "num_negative": negative_count
+    })
+    
+    # Save dataset
+    dataset_filename = os.path.join(datasets_dir, f"dataset_{formula_id}.csv")
+    save_dataset_csv(dataset, dataset_filename)
+    
+    print(f"\n  Saved formula to: {formula_filename}")
+    print(f"  Saved dataset to: {dataset_filename}")
+    
+    # Store results summary
+    all_results.append({
+        "formula_id": formula_id,
+        "formula": formula_gen.formula_to_string(formula),
+        "alphabet": formula_gen.alphabet,
+        "total_sequences": len(dataset),
+        "positive_count": positive_count,
+        "negative_count": negative_count,
+        "accuracy": accuracy,
+        "formula_file": formula_filename,
+        "dataset_file": dataset_filename
+    })
+
+# Save summary
+summary_filename = os.path.join(output_dir, "summary.json")
+with open(summary_filename, 'w') as f:
+    json.dump({
+        "parameters": {
+            "alphabet_size": alphabet_size,
+            "num_formulas": num_formulas,
+            "num_positive": num_positive,
+            "num_negative": num_negative,
+            "sequence_length": sequence_length,
+            "num_disjunctions": num_disjunctions,
+            "num_conjunctions": num_conjunctions
+        },
+        "results": all_results
+    }, f, indent=2)
+
+print(f"\n{'='*70}")
+print("Summary")
+print(f"{'='*70}")
+print(f"Generated {num_formulas} formulas with their datasets")
+print(f"All files saved in directory: {output_dir}/")
+print(f"Summary saved to: {summary_filename}")
+print(f"\nFile structure:")
+print(f"  {output_dir}/")
+print(f"    formula_1.json, dataset_1.csv")
+print(f"    formula_2.json, dataset_2.csv")
+print(f"    ...")
+print(f"    formulas/")
+print(f"      formula_1.json, formula_2.json, ..., formula_{num_formulas}.json")
+print(f"    datasets/")
+print(f"      dataset_1.csv, dataset_2.csv, ..., dataset_{num_formulas}.csv")
+print(f"    summary.json")
+
+# Display first few results
+print(f"\nFirst 3 formulas:")
+for result in all_results[:3]:
+    print(f"\n  Formula {result['formula_id']}:")
+    print(f"    {result['formula']}")
+    print(f"    Sequences: {result['positive_count']} positive, {result['negative_count']} negative")
+
