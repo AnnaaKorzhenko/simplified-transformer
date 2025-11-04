@@ -33,6 +33,7 @@
     "sequence_length": 5,
     "num_positive": 5000,
     "num_negative": 5000,
+    "total_sequences": 10000,
     "seed": 42,
     "alphabet": [
       "p1",
@@ -68,6 +69,8 @@
       "p31",
       "p32",
       "p33"
-    ]
+    ],
+    "verification_accuracy": 100.0,
+    "incorrect_labels": 0
   }
 }
