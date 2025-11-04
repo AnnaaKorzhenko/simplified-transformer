@@ -81,14 +81,34 @@ def load_single_dataset(dataset_dir: str, formula_id: int = 33):
         project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         dataset_dir = os.path.join(project_root, dataset_dir)
     
-    formula_path = os.path.join(dataset_dir, "formulas", f"formula_{formula_id}.json")
-    dataset_path = os.path.join(dataset_dir, "datasets", f"dataset_{formula_id}.csv")
+    # Try different possible path structures
+    possible_formula_paths = [
+        os.path.join(dataset_dir, "formulas", f"formula_{formula_id}.json"),
+        os.path.join(dataset_dir, f"formula_{formula_id}.json"),
+    ]
     
-    if not os.path.exists(formula_path):
-        raise FileNotFoundError(f"Formula file not found: {formula_path}")
+    possible_dataset_paths = [
+        os.path.join(dataset_dir, "datasets", f"dataset_{formula_id}.csv"),
+        os.path.join(dataset_dir, f"dataset_{formula_id}.csv"),
+    ]
     
-    if not os.path.exists(dataset_path):
-        raise FileNotFoundError(f"Dataset file not found: {dataset_path}")
+    formula_path = None
+    for path in possible_formula_paths:
+        if os.path.exists(path):
+            formula_path = path
+            break
+    
+    if formula_path is None:
+        raise FileNotFoundError(f"Formula file not found. Tried: {possible_formula_paths}")
+    
+    dataset_path = None
+    for path in possible_dataset_paths:
+        if os.path.exists(path):
+            dataset_path = path
+            break
+    
+    if dataset_path is None:
+        raise FileNotFoundError(f"Dataset file not found. Tried: {possible_dataset_paths}")
     
     formula, metadata = load_formula_json(formula_path)
     alphabet = metadata.get('alphabet', [f'p{i+1}' for i in range(33)])
@@ -96,4 +116,6 @@ def load_single_dataset(dataset_dir: str, formula_id: int = 33):
     sequence_length = metadata.get('sequence_length', 5)
     
     return formula, dataset, alphabet, sequence_length
+
+
 

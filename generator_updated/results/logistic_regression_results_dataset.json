@@ -1,0 +1,28 @@
+{
+  "dataset_info": {
+    "dataset": "generator_updated/dataset",
+    "formula_id": 33,
+    "alphabet_size": 33,
+    "sequence_length": 5,
+    "total_sequences": 10000,
+    "train_samples": 8000,
+    "test_samples": 2000
+  },
+  "results": {
+    "accuracy": 0.9925,
+    "precision": 0.9853085210577864,
+    "recall": 1.0,
+    "f1": 0.9925999013320178,
+    "auc": 0.9992139717029813,
+    "confusion_matrix": [
+      [
+        979,
+        15
+      ],
+      [
+        0,
+        1006
+      ]
+    ]
+  }
+}
