@@ -1,0 +1,123 @@
+================================================================================
+LONG SEQUENCES DATASET TRAINING RESULTS
+================================================================================
+
+Dataset Information
+-------------------
+Formula ID: 35
+Complexity: High
+  - Disjunctions: 4
+  - Conjunctions per disjunction: 3
+  - Total subformulas: 12
+Alphabet Size: 50
+Sequence Length: 20 (very long sequences)
+Total Sequences: 10,000
+  Positive: 5,000
+  Negative: 5,000
+Verification Accuracy: 100.00% 
+  - FormulaEvaluator: 100.00%
+  - MTL Library: 100.00% (verified)
+
+Formula
+-------
+((¬p41 U (p8 ∧ p2)) ∧ (¬p48 U (p18 ∧ p16)) ∧ (¬p15 U (p9 ∧ p48))) ∨ 
+((¬p7 U (p44 ∧ p48)) ∧ (¬p35 U (p6 ∧ p38)) ∧ (¬p28 U (p3 ∧ p2))) ∨ 
+((¬p6 U (p14 ∧ p15)) ∧ (¬p33 U (p39 ∧ p2)) ∧ (¬p36 U (p13 ∧ p46))) ∨ 
+((¬p42 U (p45 ∧ p35)) ∧ (¬p27 U (p15 ∧ p29)) ∧ (¬p38 U (p18 ∧ p1)))
+
+Training Configuration
+----------------------
+Train/Validation/Test Split: 70/15/15
+  Train: 7,000 sequences
+  Validation: 1,500 sequences
+  Test: 1,500 sequences
+
+Model Performance
+-----------------
+
+1. Logistic Regression
+   Validation Accuracy: 84.80%
+   Test Accuracy: 84.73%
+   Precision: 84.42%
+   Recall: 85.43%
+   F1 Score: 84.92%
+   AUC-ROC: 92.23%
+   Confusion Matrix: [[626, 119], [110, 645]]
+   
+   Performance: Good performance but shows a significant drop compared to 
+   shorter sequences (84.73% vs 97.13% for length 10). This suggests that 
+   longer sequences are more challenging for the feature-based approach.
+
+2. Transformer (Hard Attention)
+   Validation Accuracy: 48.27%
+   Test Accuracy: 51.80%
+   Precision: 51.31%
+   Recall: 82.78%
+   F1 Score: 63.36%
+   AUC-ROC: 52.08%
+   Confusion Matrix: [[152, 593], [130, 625]]
+   
+   Performance: Similar to medium-length sequences (51.80% vs 54.80% for 
+   length 10). The model maintains its tendency to predict more positive 
+   cases (high recall, lower precision).
+
+3. Transformer (Softmax Attention)
+   Validation Accuracy: 49.20%
+   Test Accuracy: 52.67%
+   Precision: 52.93%
+   Recall: 53.77%
+   F1 Score: 53.35%
+   AUC-ROC: 50.90%
+   Confusion Matrix: [[384, 361], [349, 406]]
+   
+   Performance: Slight improvement over medium-length sequences 
+   (52.67% vs 51.73% for length 10). Still performs close to random.
+
+Comparison: Sequence Length Impact
+-----------------------------------
+Model                     Length 5         Length 10        Length 20
+                         (Formula 33)     (Formula 34)     (Formula 35)
+Logistic Regression       99.13%          97.13%           84.73%
+Transformer Hard          49.67%          54.80%           51.80%
+Transformer Softmax       33.07%          51.73%           52.67%
+
+Key Observations
+----------------
+1. Logistic Regression accuracy decreases significantly with longer sequences:
+   - Length 5:  99.13%
+   - Length 10: 97.13% (-2.00%)
+   - Length 20: 84.73% (-12.40% from length 10, -14.40% from length 5)
+   
+   This suggests that the positional features (one-hot encoding) become less 
+   effective as sequences get longer, possibly due to sparsity or the fixed 
+   feature dimensionality.
+
+2. Transformer performance is relatively stable across different sequence lengths:
+   - Hard Attention: 49.67% → 54.80% → 51.80%
+   - Softmax: 33.07% → 51.73% → 52.67%
+   
+   The transformers show some improvement from length 5 to 10, but then 
+   plateau or slightly decrease at length 20.
+
+3. Performance gap between Logistic Regression and Transformers:
+   - At length 5:  ~49% gap
+   - At length 10: ~42% gap
+   - At length 20: ~33% gap
+   
+   The gap narrows as sequences get longer, though Logistic Regression still 
+   significantly outperforms transformers.
+
+4. Transformer Hard Attention shows better F1 scores than Softmax:
+   - Length 10: 63.86% (Hard) vs 51.01% (Softmax)
+   - Length 20: 63.36% (Hard) vs 53.35% (Softmax)
+   
+   Hard attention's tendency to predict more positives (high recall) gives 
+   it better F1 scores despite similar accuracy.
+
+Files
+-----
+Formula: generator_updated/dataset/formula_35.json
+Dataset: generator_updated/dataset/dataset_35.csv
+Training Results: generator_updated/results/all_models_results_long_sequences.json
+Training Log: generator_updated/training_output_long_sequences.log
+
