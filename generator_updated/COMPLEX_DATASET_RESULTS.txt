@@ -1,0 +1,105 @@
+================================================================================
+COMPLEX DATASET TRAINING RESULTS
+================================================================================
+
+Dataset Information
+-------------------
+Formula ID: 34
+Complexity: High
+  - Disjunctions: 4
+  - Conjunctions per disjunction: 3
+  - Total subformulas: 12
+Alphabet Size: 50
+Sequence Length: 10 (longer sequences)
+Total Sequences: 10,000
+  Positive: 5,000
+  Negative: 5,000
+Verification Accuracy: 100.00% 
+  - FormulaEvaluator: 100.00%
+  - MTL Library: 100.00%
+
+Formula
+-------
+((¬p41 U (p8 ∧ p2)) ∧ (¬p48 U (p18 ∧ p16)) ∧ (¬p15 U (p9 ∧ p48))) ∨ 
+((¬p7 U (p44 ∧ p48)) ∧ (¬p35 U (p6 ∧ p38)) ∧ (¬p28 U (p3 ∧ p2))) ∨ 
+((¬p6 U (p14 ∧ p15)) ∧ (¬p33 U (p39 ∧ p2)) ∧ (¬p36 U (p13 ∧ p46))) ∨ 
+((¬p42 U (p45 ∧ p35)) ∧ (¬p27 U (p15 ∧ p29)) ∧ (¬p38 U (p18 ∧ p1)))
+
+Training Configuration
+----------------------
+Train/Validation/Test Split: 70/15/15
+  Train: 7,000 sequences
+  Validation: 1,500 sequences
+  Test: 1,500 sequences
+
+Model Performance
+-----------------
+
+1. Logistic Regression
+   Validation Accuracy: 96.60%
+   Test Accuracy: 97.13%
+   Precision: 95.99%
+   Recall: 98.41%
+   F1 Score: 97.19%
+   AUC-ROC: 99.05%
+   Confusion Matrix: [[714, 31], [12, 743]]
+   
+   Performance: Excellent performance on complex formula with longer sequences.
+
+2. Transformer (Hard Attention)
+   Validation Accuracy: 48.27%
+   Test Accuracy: 54.80%
+   Precision: 53.43%
+   Recall: 79.34%
+   F1 Score: 63.86%
+   AUC-ROC: 53.49%
+   Confusion Matrix: [[223, 522], [156, 599]]
+   
+   Performance: Shows improvement over simpler dataset. Better F1 score 
+   (63.86% vs 0% on simpler dataset), but still below Logistic Regression. 
+   The model tends to predict more positive cases (high recall, lower precision).
+
+3. Transformer (Softmax Attention)
+   Validation Accuracy: 51.67%
+   Test Accuracy: 51.73%
+   Precision: 52.14%
+   Recall: 49.93%
+   F1 Score: 51.01%
+   AUC-ROC: 52.47%
+   Confusion Matrix: [[399, 346], [378, 377]]
+   
+   Performance: Slightly better than random (50%), but still very limited. 
+   Early stopping triggered at epoch 22.
+
+Comparison: Simple vs Complex Dataset
+--------------------------------------
+Model                     Simple Dataset (Formula 33)    Complex Dataset (Formula 34)
+Logistic Regression       99.13%                         97.13%
+Transformer Hard          49.67%                         54.80%
+Transformer Softmax       33.07%                         51.73%
+
+Observations:
+- Logistic Regression maintains high performance even on complex formulas (~2% drop)
+- Transformers show improvement on complex dataset, possibly due to:
+  * Longer sequences providing more context
+  * More complex patterns allowing better learning
+  * Still significantly below Logistic Regression performance
+
+Key Insights
+------------
+1. Logistic Regression consistently outperforms transformers on both simple 
+   and complex formulas
+2. Transformers show marginal improvement on complex/longer sequences but 
+   remain far from optimal
+3. Complexity (more disjunctions/conjunctions, longer sequences) slightly 
+   reduces Logistic Regression accuracy but improves transformer performance
+4. Hard Attention shows better F1 score than Softmax on complex dataset 
+   (63.86% vs 51.01%)
+
+Files
+-----
+Formula: generator_updated/dataset/formula_34.json
+Dataset: generator_updated/dataset/dataset_34.csv
+Training Results: generator_updated/results/all_models_results_complex.json
+Training Log: generator_updated/training_output_complex.log
+
