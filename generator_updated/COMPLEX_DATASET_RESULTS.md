@@ -12,7 +12,9 @@
 - **Total Sequences**: 10,000
   - Positive: 5,000
   - Negative: 5,000
-- **Verification Accuracy**: 100.00% (with FormulaEvaluator)
+- **Verification Accuracy**: 100.00% 
+  - FormulaEvaluator: 100.00%
+  - MTL Library: 100.00%
 
 ## Formula
 
