@@ -1,28 +1,28 @@
 {
   "dataset_info": {
     "dataset": "generator_updated/dataset",
-    "formula_id": 33,
-    "alphabet_size": 33,
-    "sequence_length": 5,
+    "formula_id": 34,
+    "alphabet_size": 50,
+    "sequence_length": 10,
     "total_sequences": 10000,
     "train_samples": 7000,
     "val_samples": 1500,
     "test_samples": 1500
   },
   "results": {
-    "accuracy": 0.9913333333333333,
-    "precision": 0.9830729166666666,
-    "recall": 1.0,
-    "f1": 0.9914642153644123,
-    "auc": 0.9990524023289924,
+    "accuracy": 0.9713333333333334,
+    "precision": 0.9599483204134367,
+    "recall": 0.9841059602649007,
+    "f1": 0.9718770438194899,
+    "auc": 0.9904706875861149,
     "confusion_matrix": [
       [
-        732,
-        13
+        714,
+        31
       ],
       [
-        0,
-        755
+        12,
+        743
       ]
     ]
   }
