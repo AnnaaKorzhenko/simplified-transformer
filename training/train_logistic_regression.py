@@ -14,12 +14,14 @@ from sklearn.metrics import (
 from typing import List, Dict
 import matplotlib.pyplot as plt
 
-from training.utils import extract_features, split_dataset, load_single_dataset
+from training.utils import extract_features, split_dataset, split_dataset_three_way, load_single_dataset
 
 
 def train_logistic_regression(X_train: List[List[str]], y_train: List[int],
                               X_test: List[List[str]], y_test: List[int],
                               alphabet: List[str], sequence_length: int,
+                              X_val: List[List[str]] = None,
+                              y_val: List[int] = None,
                               random_state: int = 42) -> Dict:
     """Train logistic regression model."""
     # Extract features
@@ -30,7 +32,14 @@ def train_logistic_regression(X_train: List[List[str]], y_train: List[int],
     model = LogisticRegression(max_iter=1000, random_state=random_state, solver='liblinear')
     model.fit(X_train_features, y_train)
     
-    # Predict
+    # Evaluate on validation set if provided
+    if X_val is not None and y_val is not None:
+        X_val_features = np.array([extract_features(seq, alphabet, sequence_length) for seq in X_val])
+        y_val_pred = model.predict(X_val_features)
+        val_accuracy = accuracy_score(y_val, y_val_pred)
+        print(f"Validation Accuracy: {val_accuracy:.4f}")
+    
+    # Predict on test set
     y_pred = model.predict(X_test_features)
     y_pred_proba = model.predict_proba(X_test_features)[:, 1]
     
@@ -77,15 +86,19 @@ def train_on_dataset(dataset_dir: str, formula_id: int = 33, output_dir: str = N
     print(f"Positive: {sum(1 for _, label in dataset if label == 1)}")
     print(f"Negative: {sum(1 for _, label in dataset if label == 0)}\n")
     
-    # Split dataset
-    X_train, y_train, X_test, y_test = split_dataset(dataset, test_size=0.2, random_state=42)
+    # Split dataset into train/val/test
+    X_train, y_train, X_val, y_val, X_test, y_test = split_dataset_three_way(
+        dataset, train_size=0.7, val_size=0.15, test_size=0.15, random_state=42
+    )
     print(f"Train set: {len(X_train)} sequences")
+    print(f"Validation set: {len(X_val)} sequences")
     print(f"Test set: {len(X_test)} sequences\n")
     
     # Train
     print("Training Logistic Regression...")
     result = train_logistic_regression(
-        X_train, y_train, X_test, y_test, alphabet, sequence_length, random_state=42
+        X_train, y_train, X_test, y_test, alphabet, sequence_length,
+        X_val=X_val, y_val=y_val, random_state=42
     )
     
     # Print results
@@ -137,6 +150,7 @@ def train_on_dataset(dataset_dir: str, formula_id: int = 33, output_dir: str = N
             'sequence_length': sequence_length,
             'total_sequences': len(dataset),
             'train_samples': len(X_train),
+            'val_samples': len(X_val),
             'test_samples': len(X_test)
         },
         'results': {
@@ -178,4 +192,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 

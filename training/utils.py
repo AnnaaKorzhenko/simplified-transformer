@@ -74,6 +74,38 @@ def split_dataset(dataset: List[Tuple[List[str], int]], test_size: float = 0.2, 
     return X_train, y_train, X_test, y_test
 
 
+def split_dataset_three_way(dataset: List[Tuple[List[str], int]], 
+                            train_size: float = 0.7, 
+                            val_size: float = 0.15, 
+                            test_size: float = 0.15,
+                            random_state: int = 42):
+    """Split dataset into train, validation, and test sets."""
+    assert abs(train_size + val_size + test_size - 1.0) < 1e-6, "Sizes must sum to 1.0"
+    
+    np.random.seed(random_state)
+    random.seed(random_state)
+    
+    shuffled = dataset.copy()
+    random.shuffle(shuffled)
+    
+    total = len(shuffled)
+    train_idx = int(total * train_size)
+    val_idx = train_idx + int(total * val_size)
+    
+    train_data = shuffled[:train_idx]
+    val_data = shuffled[train_idx:val_idx]
+    test_data = shuffled[val_idx:]
+    
+    X_train = [seq for seq, _ in train_data]
+    y_train = [label for _, label in train_data]
+    X_val = [seq for seq, _ in val_data]
+    y_val = [label for _, label in val_data]
+    X_test = [seq for seq, _ in test_data]
+    y_test = [label for _, label in test_data]
+    
+    return X_train, y_train, X_val, y_val, X_test, y_test
+
+
 def load_single_dataset(dataset_dir: str, formula_id: int = 33):
     """Load a single formula and dataset."""
     # Resolve path relative to project root

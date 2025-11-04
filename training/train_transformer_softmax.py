@@ -13,7 +13,7 @@ from sklearn.metrics import (
 from typing import List, Dict
 import matplotlib.pyplot as plt
 
-from training.utils import split_dataset, load_single_dataset
+from training.utils import split_dataset, split_dataset_three_way, load_single_dataset
 
 
 class SimplifiedTransformer:
@@ -94,7 +94,9 @@ def train_transformer_soft(X_train: List[List[str]], y_train: List[int],
                            X_test: List[List[str]], y_test: List[int],
                            alphabet: List[str], sequence_length: int,
                            epochs: int = 100, learning_rate: float = 0.001,
-                           random_state: int = 42) -> Dict:
+                           random_state: int = 42,
+                           X_val: List[List[str]] = None,
+                           y_val: List[int] = None) -> Dict:
     """Train transformer with softmax attention (gradient descent with numerical gradients)."""
     model = SimplifiedTransformer(
         alphabet_size=len(alphabet),
@@ -104,6 +106,9 @@ def train_transformer_soft(X_train: List[List[str]], y_train: List[int],
     
     best_accuracy = 0.0
     best_model_state = None
+    use_val = X_val is not None and y_val is not None
+    patience = 20  # Early stopping patience
+    no_improve = 0
     
     for epoch in range(epochs):
         total_loss = 0.0
@@ -122,11 +127,26 @@ def train_transformer_soft(X_train: List[List[str]], y_train: List[int],
             loss = (output - target) ** 2
             total_loss += loss
         
-        accuracy = correct / len(X_train)
+        train_accuracy = correct / len(X_train)
         avg_loss = total_loss / len(X_train)
+        
+        # Evaluate on validation set if provided
+        val_accuracy = None
+        if use_val:
+            val_correct = 0
+            for seq, label in zip(X_val, y_val):
+                pred = model.predict_soft(seq, alphabet)
+                if pred == label:
+                    val_correct += 1
+            val_accuracy = val_correct / len(X_val)
+            # Use validation accuracy for model selection
+            accuracy = val_accuracy
+        else:
+            accuracy = train_accuracy
         
         if accuracy > best_accuracy:
             best_accuracy = accuracy
+            no_improve = 0
             best_model_state = {
                 'W_enc': model.W_enc.copy(),
                 'Q_layers': [Q.copy() for Q in model.Q_layers],
@@ -153,9 +173,17 @@ def train_transformer_soft(X_train: List[List[str]], y_train: List[int],
             for i in range(len(model.W_enc)):
                 for j in range(len(model.W_enc[0])):
                     model.W_enc[i, j] += np.random.randn() * learning_rate * 0.1
+        else:
+            no_improve += 1
+        
+        # Early stopping if validation accuracy doesn't improve
+        if use_val and no_improve >= patience:
+            print(f"  Early stopping at epoch {epoch} (no improvement for {patience} epochs)")
+            break
         
         if epoch % 20 == 0 and len(X_train) > 1000:
-            print(f"  Epoch {epoch}/{epochs}, Train Accuracy: {accuracy:.4f}, Loss: {avg_loss:.4f}")
+            val_str = f", Val Accuracy: {val_accuracy:.4f}" if use_val else ""
+            print(f"  Epoch {epoch}/{epochs}, Train Accuracy: {train_accuracy:.4f}, Loss: {avg_loss:.4f}{val_str}")
     
     # Restore best model
     if best_model_state:
@@ -217,16 +245,20 @@ def train_on_dataset(dataset_dir: str, formula_id: int = 33, output_dir: str = N
     print(f"Negative: {sum(1 for _, label in dataset if label == 0)}")
     print(f"Epochs: {epochs}\n")
     
-    # Split dataset
-    X_train, y_train, X_test, y_test = split_dataset(dataset, test_size=0.2, random_state=42)
+    # Split dataset into train/val/test
+    X_train, y_train, X_val, y_val, X_test, y_test = split_dataset_three_way(
+        dataset, train_size=0.7, val_size=0.15, test_size=0.15, random_state=42
+    )
     print(f"Train set: {len(X_train)} sequences")
+    print(f"Validation set: {len(X_val)} sequences")
     print(f"Test set: {len(X_test)} sequences\n")
     
     # Train
     print("Training Simplified Transformer (Softmax Attention)...")
     result = train_transformer_soft(
         X_train, y_train, X_test, y_test, alphabet, sequence_length, 
-        epochs=epochs, learning_rate=0.001, random_state=42
+        epochs=epochs, learning_rate=0.001, random_state=42,
+        X_val=X_val, y_val=y_val
     )
     
     # Print results
@@ -281,6 +313,7 @@ def train_on_dataset(dataset_dir: str, formula_id: int = 33, output_dir: str = N
             'sequence_length': sequence_length,
             'total_sequences': len(dataset),
             'train_samples': len(X_train),
+            'val_samples': len(X_val),
             'test_samples': len(X_test),
             'epochs': epochs
         },
@@ -323,4 +356,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 

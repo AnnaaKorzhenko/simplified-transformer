@@ -5,23 +5,24 @@
     "alphabet_size": 33,
     "sequence_length": 5,
     "total_sequences": 10000,
-    "train_samples": 8000,
-    "test_samples": 2000
+    "train_samples": 7000,
+    "val_samples": 1500,
+    "test_samples": 1500
   },
   "results": {
-    "accuracy": 0.9925,
-    "precision": 0.9853085210577864,
+    "accuracy": 0.9913333333333333,
+    "precision": 0.9830729166666666,
     "recall": 1.0,
-    "f1": 0.9925999013320178,
-    "auc": 0.9992139717029813,
+    "f1": 0.9914642153644123,
+    "auc": 0.9990524023289924,
     "confusion_matrix": [
       [
-        979,
-        15
+        732,
+        13
       ],
       [
         0,
-        1006
+        755
       ]
     ]
   }
