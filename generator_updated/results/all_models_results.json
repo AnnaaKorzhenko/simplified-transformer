@@ -1,4 +1,14 @@
 {
+  "dataset": {
+    "formula_id": 33,
+    "description": "Regenerated baseline dataset with simultaneous (~a U (b & c)) semantics",
+    "sequence_length": 5,
+    "alphabet_size": 33,
+    "total_sequences": 10000,
+    "positive_sequences": 5000,
+    "negative_sequences": 5000,
+    "source": "generator_updated/dataset/dataset_33.csv"
+  },
   "logistic_regression": {
     "accuracy": 0.9913333333333333,
     "precision": 0.9830729166666666,

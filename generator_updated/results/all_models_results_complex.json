@@ -1,4 +1,14 @@
 {
+  "dataset": {
+    "formula_id": 34,
+    "description": "Complex dataset (more disjunctions/conjunctions) verified under simultaneous semantics",
+    "sequence_length": 10,
+    "alphabet_size": 50,
+    "total_sequences": 10000,
+    "positive_sequences": 5000,
+    "negative_sequences": 5000,
+    "source": "generator_updated/dataset/dataset_34.csv"
+  },
   "logistic_regression": {
     "accuracy": 0.9713333333333334,
     "precision": 0.9599483204134367,

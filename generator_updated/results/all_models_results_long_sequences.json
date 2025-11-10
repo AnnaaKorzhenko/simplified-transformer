@@ -1,4 +1,14 @@
 {
+  "dataset": {
+    "formula_id": 35,
+    "description": "Long sequence dataset (length 20) using simultaneous semantics, fully MTL-verified",
+    "sequence_length": 20,
+    "alphabet_size": 50,
+    "total_sequences": 10000,
+    "positive_sequences": 5000,
+    "negative_sequences": 5000,
+    "source": "generator_updated/dataset/dataset_35.csv"
+  },
   "logistic_regression": {
     "accuracy": 0.8473333333333334,
     "precision": 0.8442408376963351,
