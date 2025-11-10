@@ -77,12 +77,17 @@ class FormulaEvaluator:
     def evaluate_not_a_until_b_and_c(sequence: List[str], a: str, b: str, c: str) -> bool:
         """
         Evaluate "not a until b and c"
-        This means: a does not hold until both b and c hold simultaneously
+        This means: a does not appear in the sequence until both b and c are simultaneously true
+        (They must both appear, and we consider the position where both have appeared)
+        
+        In our sequence model (one symbol per position), "simultaneously true" means:
+        - Both b and c have appeared in the sequence
+        - The "simultaneous" position is the position where we've seen both (the later of the two)
         
         Returns True if:
-        - For all positions before the first occurrence where both b and c are true,
+        - For all positions before the position where both b and c have appeared,
           a is false at those positions
-        - If b and c never both occur, then a must never occur in the sequence
+        - If b and c are never both present, then a must never occur in the sequence
         
         Args:
             sequence: List of symbols (strings)
@@ -91,19 +96,25 @@ class FormulaEvaluator:
         if not sequence:
             return True
         
-        # Find first position where both b and c occur
-        first_bc_position = None
+        # Find positions of b and c
+        pos_b = None
+        pos_c = None
         for i, symbol in enumerate(sequence):
-            if symbol == b or symbol == c:
-                # Check if have seen both b and c up to this point
-                symbols_seen = set(sequence[:i+1])
-                if b in symbols_seen and c in symbols_seen:
-                    first_bc_position = i
-                    break
+            if symbol == b and pos_b is None:
+                pos_b = i
+            if symbol == c and pos_c is None:
+                pos_c = i
         
-        if first_bc_position is None:
-            # b and c never both occur, so a must never occur
-            return a not in sequence
+        # Check if both b and c appear
+        if pos_b is None or pos_c is None:
+            # b and c are never both present, so (b & c) is never True
+            # In MTL semantics, if the right-hand side of until is never True,
+            # the until formula is False (the condition is never satisfied)
+            return False
+        
+        # The "simultaneous" position is the position where both have appeared
+        # (the later of the two positions)
+        first_bc_position = max(pos_b, pos_c)
         
         # Check that a does not occur before first_bc_position
         return a not in sequence[:first_bc_position]
@@ -167,6 +178,7 @@ class SyntheticDataGenerator:
         # For each (a, b, c) in target clause, ensure constraint: "not a until b and c"
         for a, b, c in target_clause:
             # Place b and c early (within first 2/3 of sequence)
+            # For "simultaneously true" semantics, both must appear
             max_pos = max(1, (2 * length) // 3)
             pos_b = random.randint(0, max_pos - 1) if length > 1 else 0
             pos_c = random.randint(0, max_pos - 1) if length > 1 else 0
@@ -178,10 +190,10 @@ class SyntheticDataGenerator:
             sequence_list[pos_b] = b
             sequence_list[pos_c] = c
             
-            # Find the position where both b and c have appeared
+            # Find the position where both b and c have appeared (simultaneous position)
             first_bc = max(pos_b, pos_c)
             
-            # Ensure a does not appear before first_bc
+            # Ensure a does not appear before first_bc (the simultaneous position)
             for i in range(first_bc):
                 if sequence_list[i] == a:
                     # Replace with a random symbol that's not a
@@ -233,12 +245,12 @@ class SyntheticDataGenerator:
             # Violate at least one constraint in this clause
             a, b, c = random.choice(conj_clause)
             
-            # Violation strategy: put a before both b and c have appeared
+            # Violation strategy: put a before both b and c have appeared (simultaneous position)
             # Place a early
             pos_a = random.randint(0, max(0, length // 3)) if length > 1 else 0
             sequence_list[pos_a] = a
             
-            # Place b and c later (after a)
+            # Place b and c later (after a) so they appear after a
             if pos_a + 1 < length:
                 pos_b = random.randint(pos_a + 1, length - 1)
                 pos_c = random.randint(pos_a + 1, length - 1)

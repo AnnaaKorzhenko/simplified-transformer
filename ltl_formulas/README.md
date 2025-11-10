@@ -149,8 +149,8 @@ python3 example_usage.py
 ## Formula Evaluation Procedure
 
 For a formula "not a until b and c":
-This means: *a does not appear in the sequence until both b and c have appeared*
-That is, if a appears at position i, then both b and c must have appeared before position i. If b and c never both appear, then a must never appear.
+This means: *a does not appear in the sequence until both b and c are simultaneously true*
+In our sequence model (one symbol per position), "simultaneously true" means both b and c have appeared, and we consider the position where both have appeared (the later of their positions) as the "simultaneous" point. That is, if a appears at position i, then both b and c must have appeared by position i. If b and c never both appear, then a must never appear.
 
 For the full formula (disjunction of conjunctions):
 - The formula is satisfied if **at least one** disjunction clause is satisfied
