@@ -3,8 +3,8 @@ import numpy as np
 # VARIABLES SETUP
 # ------------------------------------------------------------
 # global parameters
-d = 10  # d of feature vectors
-d_prime = 8  # dimension after Q/K/V transformation
+d = 3  # d of feature vectors
+d_prime = 2  # dimension after Q/K/V transformation
 L = 3
 
 alphabet_w_size = 5 # |Sigma + omega|
@@ -13,19 +13,47 @@ W_enc = np.random.rand(alphabet_w_size, d)
 # ('a', 'b', 'c', 'omega')
 # the indices of the symbols in W_enc:
 # 0 -> 'a', 1 -> 'b', 2 -> 'c', 3 -> 'omega', 4 -> 'other'
-input_word_indices = [0, 1, 3] # "abw"
+input_word_indices = [0, 1, 1, 2, 3] # "abw"
 n = len(input_word_indices)
 
 # |X_0|: n x d
-X_0 = W_enc[input_word_indices, :]
+# X_0 = W_enc[input_word_indices, :]
+# 
+# # Q^l, K^l, V^l: d x d'
+# Q_1 = np.random.rand(d, d_prime)
+# K_1 = np.random.rand(d, d_prime)
+# V_1 = np.random.rand(d, d_prime)
+# 
+# # O^l: d' x d
+# O_1 = np.random.rand(d_prime, d)
 
-# Q^l, K^l, V^l: d x d'
-Q_1 = np.random.rand(d, d_prime)
-K_1 = np.random.rand(d, d_prime)
-V_1 = np.random.rand(d, d_prime)
+# Define X0: abbc
+X_0 = np.array([[0,0,1],
+               [0,1,0],
+               [0,1,0],
+               [1,0,0]])
 
-# O^l: d' x d
-O_1 = np.random.rand(d_prime, d)
+# Define X0: bacb
+X_0 = np.array([[0,1,0],
+               [0,0,1],
+               [1,0,0],
+               [0,1,0]])
+
+# Define matrices Q, K, V, O
+Q_1 = np.array([[2, 0],
+              [0, 2],
+              [0, 0]])
+
+K_1 = np.array([[0, 0],
+              [0, 2],
+              [2, 0]])
+
+V_1 = np.array([[1, 0],
+              [0, 0],
+              [0, 1]])
+
+O_1 = np.array([[2, 2, 2],
+              [3, 1, 0]])
 
 # activation function
 def sigma(M):
