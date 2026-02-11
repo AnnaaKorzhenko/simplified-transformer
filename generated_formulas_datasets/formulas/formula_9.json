@@ -1,0 +1,44 @@
+{
+  "formula": [
+    [
+      [
+        "p2",
+        "p5",
+        "p1"
+      ],
+      [
+        "p2",
+        "p3",
+        "p5"
+      ]
+    ],
+    [
+      [
+        "p5",
+        "p4",
+        "p3"
+      ],
+      [
+        "p5",
+        "p3",
+        "p4"
+      ]
+    ]
+  ],
+  "metadata": {
+    "formula_id": 9,
+    "alphabet_size": 5,
+    "num_disjunctions": 2,
+    "num_conjunctions": 2,
+    "alphabet": [
+      "p1",
+      "p2",
+      "p3",
+      "p4",
+      "p5"
+    ],
+    "sequence_length": 10,
+    "num_positive": 20,
+    "num_negative": 20
+  }
+}

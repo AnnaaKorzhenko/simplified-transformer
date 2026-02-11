@@ -1,0 +1,63 @@
+{
+  "dataset": {
+    "formula_id": 35,
+    "description": "Long sequence dataset (length 20) using simultaneous semantics, fully MTL-verified",
+    "sequence_length": 20,
+    "alphabet_size": 50,
+    "total_sequences": 10000,
+    "positive_sequences": 5000,
+    "negative_sequences": 5000,
+    "source": "generator_updated/dataset/dataset_35.csv"
+  },
+  "logistic_regression": {
+    "accuracy": 0.8473333333333334,
+    "precision": 0.8442408376963351,
+    "recall": 0.8543046357615894,
+    "f1": 0.8492429229756419,
+    "auc": 0.9223094359749322,
+    "confusion_matrix": [
+      [
+        626,
+        119
+      ],
+      [
+        110,
+        645
+      ]
+    ]
+  },
+  "transformer_hard": {
+    "accuracy": 0.518,
+    "precision": 0.513136288998358,
+    "recall": 0.8278145695364238,
+    "f1": 0.6335529650278763,
+    "auc": 0.5207529223521045,
+    "confusion_matrix": [
+      [
+        152,
+        593
+      ],
+      [
+        130,
+        625
+      ]
+    ]
+  },
+  "transformer_softmax": {
+    "accuracy": 0.5266666666666666,
+    "precision": 0.529335071707953,
+    "recall": 0.5377483443708609,
+    "f1": 0.533508541392904,
+    "auc": 0.5089675096670963,
+    "confusion_matrix": [
+      [
+        384,
+        361
+      ],
+      [
+        349,
+        406
+      ]
+    ]
+  }
+}
