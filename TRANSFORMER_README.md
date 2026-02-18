@@ -5,24 +5,10 @@
 ### Install Dependencies
 
 ```bash
-pip install torch pandas scikit-learn numpy matplotlib seaborn
+pip install torch pandas
 ```
 
-Or use the requirements file:
-
-```bash
-pip install -r requirements.txt
-```
-
-### Run Example
-
-Run the example script to see the transformer in action:
-
-```bash
-python3 example.py
-```
-
-### Train the Model
+### Train
 
 Train the transformer on a dataset:
 
@@ -41,8 +27,7 @@ Arguments:
 - `--lr`: Learning rate (default: 0.001)
 - `--threshold`: Classification threshold (default: 0.0)
 
-### Quick Training
-
+OR
 Use the default training script:
 
 ```bash
@@ -54,7 +39,4 @@ python3 run_training.py
 - PyTorch >= 1.9.0
 - Python 3.6+
 - pandas
-- scikit-learn
-- numpy
-- matplotlib
-- seaborn
+
