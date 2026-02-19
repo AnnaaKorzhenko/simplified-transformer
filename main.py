@@ -194,3 +194,17 @@ extract_layer_rules(alphabet_vectors, Q_1, K_1, V_1, O_1)
 #2nd laeyr vab, vbc
 #3rd vabbc
 #4th layer v(8 letters history)
+
+def simplify_input_word(word):
+    seen = set()
+    simplified = []
+    for char in word:
+        if char not in seen:
+            simplified.append(char)
+            seen.add(char)
+    return "".join(simplified)
+
+# exmape
+raw_input = "aabcbac"
+clean_input = simplify_input_word(raw_input)
+print(f"Original: {raw_input} -> Simplified: {clean_input}")
