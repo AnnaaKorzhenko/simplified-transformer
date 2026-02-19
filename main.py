@@ -13,7 +13,7 @@ W_enc = np.random.rand(alphabet_w_size, d)
 # ('a', 'b', 'c', 'omega')
 # the indices of the symbols in W_enc:
 # 0 -> 'a', 1 -> 'b', 2 -> 'c', 3 -> 'omega', 4 -> 'other'
-input_word_indices = [0, 1, 1, 2, 3] # "abw"
+input_word_indices = [0, 1, 1, 2, 3] # "abbcw"
 n = len(input_word_indices)
 
 # |X_0|: n x d
@@ -141,3 +141,56 @@ def classify_output(X_L, classification_threshold):
 # Example classification using X_1 as if it were the final layer X_L
 classification_result = classify_output(X_1, threshold)
 print(f"\nClassification (for 1 layer): {classification_result}")
+
+
+# 1. Alphabet vectors (X_{l-1})
+alphabet_vectors = {
+    'a': np.array([0, 1, 0]),
+    'b': np.array([0, 0, 1]),
+    'c': np.array([1, 0, 0])
+}
+
+# 2. Matrices Q, K, V, O
+Q_1 = np.array([[2, 0], [0, 2], [0, 0]])
+K_1 = np.array([[0, 0], [0, 2], [2, 0]])
+V_1 = np.array([[1, 0], [0, 0], [0, 1]])
+O_1 = np.array([[2, 2, 2], [3, 1, 0]])
+
+def extract_layer_rules(vectors, Q, K, V, O):
+    symbols = list(vectors.keys())
+    rules = []
+
+    for trigger_sym in symbols:
+        x_q = vectors[trigger_sym]
+        scores = {}
+
+        # Alpha for every possible target
+        for target_sym in symbols:
+            x_k = vectors[target_sym]
+            # alpha = (x_source * Q) * (x_target * K)
+            score = (x_q @ Q) @ (x_k @ K).T
+            scores[target_sym] = score
+
+        # Sort targets by score descending, equivalence classes
+        sorted_targets = sorted(scores.items(), key=lambda item: item[1], reverse=True)
+
+        print(f"\nTrigger symbol '{trigger_sym}' scores: {scores}")
+
+        for target_sym, score in sorted_targets:
+            # Calculate the resulting vector if trigger_sym attends to target_sym
+            # Formula: x_new = x_old + ReLU(x_target * V * O)
+            x_target = vectors[target_sym]
+            update = np.maximum(0, (x_target @ V) @ O)
+            new_vector = vectors[trigger_sym] + update
+
+            print(f"  If '{trigger_sym}' attends to '{target_sym}' (score {score}), new vector: {new_vector}")
+
+    return rules
+
+extract_layer_rules(alphabet_vectors, Q_1, K_1, V_1, O_1)
+
+
+#1st layer a b c 
+#2nd laeyr vab, vbc
+#3rd vabbc
+#4th layer v(8 letters history)
