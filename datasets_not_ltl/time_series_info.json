@@ -1,0 +1,17 @@
+{
+  "task": "initial_value",
+  "task_description": "Sequence reaches target value in first half",
+  "num_positive": 100,
+  "num_negative": 100,
+  "length": 15,
+  "total_sequences": 200,
+  "discretize": true,
+  "vocab_size": 4,
+  "symbols": [
+    "A",
+    "B",
+    "C"
+  ],
+  "threshold": null,
+  "target_value": 3
+}

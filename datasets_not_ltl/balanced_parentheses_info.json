@@ -1,0 +1,13 @@
+{
+  "task": "balanced_parentheses",
+  "num_positive": 100,
+  "num_negative": 100,
+  "min_length": 6,
+  "max_length": 20,
+  "total_sequences": 200,
+  "vocab_size": 3,
+  "symbols": [
+    "(",
+    ")"
+  ]
+}
