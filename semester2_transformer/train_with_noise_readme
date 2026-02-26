@@ -1,0 +1,27 @@
+# Train with noise 
+
+`train_with_noise.py` trains the Simplified Transformer on the LTL dataset while injecting **noise into the training sequences only** (validation/test remain clean), then compares metrics across noise levels/types and saves results.
+
+## Noise types
+- `replacement`: replace selected symbols with random symbols
+- `deletion`: length-preserving (implemented as replacement)
+- `insertion`: length-preserving (implemented as replacement)
+- `swap`: swap adjacent symbols
+- `shuffle`: shuffle symbols within a chosen subset of positions
+- `mixed`: 50% replacement + 50% swap
+
+`noise_level` is the fraction of positions affected (e.g., `0.1` = ~10% of symbols corrupted).
+
+## Run
+Example (single noise type, multiple levels):
+
+python3 train_with_noise.py \
+  --csv_path semester2_transformer/dataset/dataset_33.csv \
+  --json_path semester2_transformer/dataset/formula_33.json \
+  --noise_types replacement \
+  --noise_levels 0.0 0.1 0.2 0.3 \
+  --epochs 15 \
+  --batch_size 64 \
+  --lr 0.001 \
+  --output results_noise.json \
+  --plot_dir plots_noise
