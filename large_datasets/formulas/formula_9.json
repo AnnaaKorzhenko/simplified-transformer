@@ -1,0 +1,59 @@
+{
+  "formula": [
+    [
+      [
+        "p8",
+        "p17",
+        "p18"
+      ],
+      [
+        "p6",
+        "p8",
+        "p19"
+      ]
+    ],
+    [
+      [
+        "p18",
+        "p9",
+        "p13"
+      ],
+      [
+        "p18",
+        "p15",
+        "p20"
+      ]
+    ]
+  ],
+  "metadata": {
+    "formula_id": 9,
+    "alphabet_size": 20,
+    "num_disjunctions": 2,
+    "num_conjunctions": 2,
+    "alphabet": [
+      "p1",
+      "p2",
+      "p3",
+      "p4",
+      "p5",
+      "p6",
+      "p7",
+      "p8",
+      "p9",
+      "p10",
+      "p11",
+      "p12",
+      "p13",
+      "p14",
+      "p15",
+      "p16",
+      "p17",
+      "p18",
+      "p19",
+      "p20"
+    ],
+    "sequence_length": 10,
+    "num_positive": 50,
+    "num_negative": 50
+  }
+}

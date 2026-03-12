@@ -1,0 +1,268 @@
+{
+  "parameters": {
+    "alphabet_size": 5,
+    "num_formulas": 15,
+    "num_positive": 20,
+    "num_negative": 20,
+    "sequence_length": 10,
+    "num_disjunctions": 2,
+    "num_conjunctions": 2
+  },
+  "results": [
+    {
+      "formula_id": 1,
+      "formula": "((\u00acp1 U (p3 \u2227 p4)) \u2227 (\u00acp2 U (p4 \u2227 p5))) \u2228 ((\u00acp1 U (p4 \u2227 p3)) \u2227 (\u00acp4 U (p1 \u2227 p3)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_1.json",
+      "dataset_file": "generated_formulas_datasets/dataset_1.csv"
+    },
+    {
+      "formula_id": 2,
+      "formula": "((\u00acp4 U (p1 \u2227 p5)) \u2227 (\u00acp4 U (p2 \u2227 p5))) \u2228 ((\u00acp1 U (p2 \u2227 p5)) \u2227 (\u00acp5 U (p1 \u2227 p4)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_2.json",
+      "dataset_file": "generated_formulas_datasets/dataset_2.csv"
+    },
+    {
+      "formula_id": 3,
+      "formula": "((\u00acp3 U (p4 \u2227 p2)) \u2227 (\u00acp3 U (p1 \u2227 p2))) \u2228 ((\u00acp3 U (p1 \u2227 p4)) \u2227 (\u00acp4 U (p1 \u2227 p5)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_3.json",
+      "dataset_file": "generated_formulas_datasets/dataset_3.csv"
+    },
+    {
+      "formula_id": 4,
+      "formula": "((\u00acp1 U (p4 \u2227 p5)) \u2227 (\u00acp5 U (p2 \u2227 p3))) \u2228 ((\u00acp5 U (p2 \u2227 p3)) \u2227 (\u00acp5 U (p1 \u2227 p4)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_4.json",
+      "dataset_file": "generated_formulas_datasets/dataset_4.csv"
+    },
+    {
+      "formula_id": 5,
+      "formula": "((\u00acp3 U (p1 \u2227 p2)) \u2227 (\u00acp5 U (p4 \u2227 p3))) \u2228 ((\u00acp3 U (p5 \u2227 p4)) \u2227 (\u00acp4 U (p5 \u2227 p3)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_5.json",
+      "dataset_file": "generated_formulas_datasets/dataset_5.csv"
+    },
+    {
+      "formula_id": 6,
+      "formula": "((\u00acp5 U (p3 \u2227 p1)) \u2227 (\u00acp5 U (p3 \u2227 p4))) \u2228 ((\u00acp2 U (p4 \u2227 p1)) \u2227 (\u00acp2 U (p1 \u2227 p5)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_6.json",
+      "dataset_file": "generated_formulas_datasets/dataset_6.csv"
+    },
+    {
+      "formula_id": 7,
+      "formula": "((\u00acp1 U (p3 \u2227 p2)) \u2227 (\u00acp1 U (p3 \u2227 p4))) \u2228 ((\u00acp5 U (p1 \u2227 p3)) \u2227 (\u00acp1 U (p3 \u2227 p5)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_7.json",
+      "dataset_file": "generated_formulas_datasets/dataset_7.csv"
+    },
+    {
+      "formula_id": 8,
+      "formula": "((\u00acp4 U (p3 \u2227 p2)) \u2227 (\u00acp2 U (p4 \u2227 p5))) \u2228 ((\u00acp1 U (p3 \u2227 p5)) \u2227 (\u00acp5 U (p1 \u2227 p4)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_8.json",
+      "dataset_file": "generated_formulas_datasets/dataset_8.csv"
+    },
+    {
+      "formula_id": 9,
+      "formula": "((\u00acp2 U (p5 \u2227 p1)) \u2227 (\u00acp2 U (p3 \u2227 p5))) \u2228 ((\u00acp5 U (p4 \u2227 p3)) \u2227 (\u00acp5 U (p3 \u2227 p4)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_9.json",
+      "dataset_file": "generated_formulas_datasets/dataset_9.csv"
+    },
+    {
+      "formula_id": 10,
+      "formula": "((\u00acp3 U (p1 \u2227 p5)) \u2227 (\u00acp5 U (p4 \u2227 p2))) \u2228 ((\u00acp4 U (p1 \u2227 p5)) \u2227 (\u00acp2 U (p4 \u2227 p1)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_10.json",
+      "dataset_file": "generated_formulas_datasets/dataset_10.csv"
+    },
+    {
+      "formula_id": 11,
+      "formula": "((\u00acp5 U (p2 \u2227 p4)) \u2227 (\u00acp5 U (p4 \u2227 p3))) \u2228 ((\u00acp5 U (p3 \u2227 p4)) \u2227 (\u00acp4 U (p1 \u2227 p5)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_11.json",
+      "dataset_file": "generated_formulas_datasets/dataset_11.csv"
+    },
+    {
+      "formula_id": 12,
+      "formula": "((\u00acp2 U (p4 \u2227 p3)) \u2227 (\u00acp3 U (p4 \u2227 p2))) \u2228 ((\u00acp4 U (p2 \u2227 p5)) \u2227 (\u00acp3 U (p4 \u2227 p1)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_12.json",
+      "dataset_file": "generated_formulas_datasets/dataset_12.csv"
+    },
+    {
+      "formula_id": 13,
+      "formula": "((\u00acp1 U (p2 \u2227 p5)) \u2227 (\u00acp3 U (p1 \u2227 p5))) \u2228 ((\u00acp2 U (p3 \u2227 p1)) \u2227 (\u00acp3 U (p4 \u2227 p5)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_13.json",
+      "dataset_file": "generated_formulas_datasets/dataset_13.csv"
+    },
+    {
+      "formula_id": 14,
+      "formula": "((\u00acp5 U (p1 \u2227 p2)) \u2227 (\u00acp5 U (p3 \u2227 p4))) \u2228 ((\u00acp4 U (p2 \u2227 p1)) \u2227 (\u00acp3 U (p1 \u2227 p2)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_14.json",
+      "dataset_file": "generated_formulas_datasets/dataset_14.csv"
+    },
+    {
+      "formula_id": 15,
+      "formula": "((\u00acp1 U (p3 \u2227 p4)) \u2227 (\u00acp5 U (p1 \u2227 p4))) \u2228 ((\u00acp5 U (p3 \u2227 p2)) \u2227 (\u00acp3 U (p4 \u2227 p5)))",
+      "alphabet": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "total_sequences": 40,
+      "positive_count": 20,
+      "negative_count": 20,
+      "accuracy": 100.0,
+      "formula_file": "generated_formulas_datasets/formula_15.json",
+      "dataset_file": "generated_formulas_datasets/dataset_15.csv"
+    }
+  ]
+}

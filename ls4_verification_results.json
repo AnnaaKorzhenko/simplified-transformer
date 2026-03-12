@@ -1,0 +1,10 @@
+{
+  "total_checked": 10000,
+  "correct": 10000,
+  "incorrect": 0,
+  "accuracy": 100.0,
+  "errors": [],
+  "ls4_path": "/Users/victoriaportnaya/uhat/ls4/core/ls4",
+  "ls4_available": true,
+  "verification_method": "Built-in evaluator (LS4-compatible PLTL semantics for finite traces)"
+}

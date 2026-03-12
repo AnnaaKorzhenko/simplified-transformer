@@ -1,0 +1,275 @@
+{
+  "summary": {
+    "title": "All Training Results Summary",
+    "description": "Comprehensive results from temporal logic formula classification experiments",
+    "generated_date": "2024"
+  },
+  "experiments": {
+    "large_single_dataset": {
+      "description": "Single formula with 10,000 sequences",
+      "dataset_info": {
+        "formula_id": 33,
+        "alphabet_size": 33,
+        "sequence_length": 5,
+        "total_sequences": 10000,
+        "train_samples": 8000,
+        "test_samples": 2000,
+        "positive_sequences": 5000,
+        "negative_sequences": 5000
+      },
+      "results": {
+        "logistic_regression": {
+          "accuracy": 0.9960,
+          "precision": 0.9980,
+          "recall": 0.9940,
+          "f1": 0.9960,
+          "auc": 0.9999,
+          "confusion_matrix": [[992, 2], [6, 1000]]
+        },
+        "transformer_hard": {
+          "accuracy": 0.6680,
+          "precision": 0.6752,
+          "recall": 0.6551,
+          "f1": 0.6650,
+          "auc": 0.6061,
+          "confusion_matrix": [[677, 317], [347, 659]]
+        },
+        "transformer_softmax": {
+          "accuracy": 0.4250,
+          "precision": 0.3963,
+          "recall": 0.2734,
+          "f1": 0.3235,
+          "auc": 0.3604,
+          "confusion_matrix": [[575, 419], [731, 275]]
+        }
+      }
+    },
+    "small_single_dataset": {
+      "description": "Single formula with 100 sequences",
+      "dataset_info": {
+        "formula_id": 33,
+        "alphabet_size": 33,
+        "sequence_length": 5,
+        "total_sequences": 100,
+        "train_samples": 80,
+        "test_samples": 20,
+        "positive_sequences": 50,
+        "negative_sequences": 50
+      },
+      "results": {
+        "logistic_regression": {
+          "accuracy": 1.0000,
+          "precision": 1.0000,
+          "recall": 1.0000,
+          "f1": 1.0000,
+          "auc": 1.0000,
+          "confusion_matrix": [[9, 0], [0, 11]]
+        },
+        "transformer_hard": {
+          "accuracy": 0.4500,
+          "precision": 0.0000,
+          "recall": 0.0000,
+          "f1": 0.0000,
+          "auc": 0.4141,
+          "confusion_matrix": [[9, 0], [11, 0]]
+        },
+        "transformer_softmax": {
+          "accuracy": 0.4000,
+          "precision": 0.4286,
+          "recall": 0.2727,
+          "f1": 0.3333,
+          "auc": 0.4545,
+          "confusion_matrix": [[5, 4], [8, 3]]
+        }
+      }
+    },
+    "large_datasets_averaged": {
+      "description": "50 formulas trained separately, results averaged",
+      "dataset_info": {
+        "num_formulas": 50,
+        "alphabet_size": 20,
+        "sequences_per_formula": 100,
+        "test_size": 0.2
+      },
+      "results": {
+        "logistic_regression": {
+          "accuracy": 0.8530,
+          "precision": 0.8828,
+          "recall": 0.8527,
+          "f1": 0.8607,
+          "auc": 0.9360,
+          "std_accuracy": 0.0961,
+          "std_f1": 0.0985,
+          "std_auc": 0.0611
+        },
+        "transformer_hard": {
+          "accuracy": 0.5290,
+          "precision": 0.5506,
+          "recall": 0.7291,
+          "f1": 0.6115,
+          "auc": 0.5151,
+          "std_accuracy": 0.0949,
+          "std_f1": 0.1343,
+          "std_auc": 0.1414
+        },
+        "transformer_softmax": {
+          "accuracy": 0.5100,
+          "precision": 0.5570,
+          "recall": 0.5036,
+          "f1": 0.5209,
+          "auc": 0.5176,
+          "std_accuracy": 0.1196,
+          "std_f1": 0.1404,
+          "std_auc": 0.1488
+        }
+      }
+    },
+    "small_dataset_combined": {
+      "description": "15 formulas combined into single training set",
+      "dataset_info": {
+        "num_formulas": 15,
+        "alphabet_size": 5,
+        "sequences_per_formula": 40,
+        "total_sequences": 600,
+        "train_samples": 480,
+        "test_samples": 120
+      },
+      "results": {
+        "logistic_regression": {
+          "accuracy": 0.5583,
+          "precision": 0.6226,
+          "recall": 0.5000,
+          "f1": 0.5546,
+          "auc": 0.5645
+        },
+        "transformer_hard": {
+          "accuracy": 0.5250,
+          "precision": 0.5429,
+          "recall": 0.8636,
+          "f1": 0.6667,
+          "auc": 0.4847
+        },
+        "transformer_softmax": {
+          "accuracy": 0.4750,
+          "precision": 0.5190,
+          "recall": 0.6212,
+          "f1": 0.5655,
+          "auc": 0.4783
+        }
+      }
+    }
+  },
+  "comparison_table": {
+    "large_single_dataset": {
+      "ranking": [
+        {
+          "rank": 1,
+          "model": "logistic_regression",
+          "accuracy": 0.9960,
+          "f1": 0.9960,
+          "auc": 0.9999
+        },
+        {
+          "rank": 2,
+          "model": "transformer_hard",
+          "accuracy": 0.6680,
+          "f1": 0.6650,
+          "auc": 0.6061
+        },
+        {
+          "rank": 3,
+          "model": "transformer_softmax",
+          "accuracy": 0.4250,
+          "f1": 0.3235,
+          "auc": 0.3604
+        }
+      ]
+    },
+    "small_single_dataset": {
+      "ranking": [
+        {
+          "rank": 1,
+          "model": "logistic_regression",
+          "accuracy": 1.0000,
+          "f1": 1.0000,
+          "auc": 1.0000
+        },
+        {
+          "rank": 2,
+          "model": "transformer_hard",
+          "accuracy": 0.4500,
+          "f1": 0.0000,
+          "auc": 0.4141
+        },
+        {
+          "rank": 3,
+          "model": "transformer_softmax",
+          "accuracy": 0.4000,
+          "f1": 0.3333,
+          "auc": 0.4545
+        }
+      ]
+    },
+    "large_datasets_averaged": {
+      "ranking": [
+        {
+          "rank": 1,
+          "model": "logistic_regression",
+          "accuracy": 0.8530,
+          "f1": 0.8607,
+          "auc": 0.9360
+        },
+        {
+          "rank": 2,
+          "model": "transformer_hard",
+          "accuracy": 0.5290,
+          "f1": 0.6115,
+          "auc": 0.5151
+        },
+        {
+          "rank": 3,
+          "model": "transformer_softmax",
+          "accuracy": 0.5100,
+          "f1": 0.5209,
+          "auc": 0.5176
+        }
+      ]
+    },
+    "small_dataset_combined": {
+      "ranking": [
+        {
+          "rank": 1,
+          "model": "transformer_hard",
+          "accuracy": 0.5250,
+          "f1": 0.6667,
+          "auc": 0.4847
+        },
+        {
+          "rank": 2,
+          "model": "logistic_regression",
+          "accuracy": 0.5583,
+          "f1": 0.5546,
+          "auc": 0.5645
+        },
+        {
+          "rank": 3,
+          "model": "transformer_softmax",
+          "accuracy": 0.4750,
+          "f1": 0.5655,
+          "auc": 0.4783
+        }
+      ]
+    }
+  },
+  "key_observations": {
+    "best_performing_model": "Logistic Regression",
+    "dataset_size_impact": "Larger datasets show significantly better performance, especially for logistic regression",
+    "alphabet_size_impact": "Smaller alphabets present more challenges, larger alphabets with more data perform better",
+    "model_characteristics": {
+      "logistic_regression": "Very effective with feature engineering, achieves near-perfect scores on large datasets",
+      "transformer_hard": "Shows promise but needs better optimization, struggles with small datasets",
+      "transformer_softmax": "Requires significant improvements, consistently underperforms"
+    }
+  }
+}
+
