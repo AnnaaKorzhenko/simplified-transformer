@@ -1,0 +1,26 @@
+{
+  "test_metrics": {
+    "accuracy": 0.5,
+    "precision": 0.5,
+    "recall": 1.0,
+    "f1": 0.6666666666666666
+  },
+  "confusion_matrix": [
+    [
+      0,
+      150
+    ],
+    [
+      0,
+      150
+    ]
+  ],
+  "raw_output_stats": {
+    "mean": 1.8921958208084106,
+    "std": 0.0,
+    "balanced_mean": 1.8921958208084106,
+    "balanced_std": 0.0,
+    "unbalanced_mean": 1.8921958208084106,
+    "unbalanced_std": 0.0
+  }
+}
