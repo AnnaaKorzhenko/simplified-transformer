@@ -1,0 +1,16 @@
+{
+  "motif_name": "TATA",
+  "motif_sequence": "TATAAA",
+  "num_positive": 1000,
+  "num_negative": 1000,
+  "total_sequences": 2000,
+  "vocab_size": 5,
+  "symbols": [
+    "A",
+    "T",
+    "G",
+    "C"
+  ],
+  "seq_length": 100,
+  "uses_realistic_patterns": true
+}

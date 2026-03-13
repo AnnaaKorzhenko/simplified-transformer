@@ -1,0 +1,15 @@
+{
+  "motif_name": "DEAH",
+  "motif_sequence": "GATGAACAT",
+  "num_positive": 500,
+  "num_negative": 500,
+  "seq_length": 100,
+  "total_sequences": 1000,
+  "vocab_size": 5,
+  "symbols": [
+    "A",
+    "T",
+    "G",
+    "C"
+  ]
+}
