@@ -1,0 +1,191 @@
+{
+  "splits": "70/15/15 train/val/test, seed 42",
+  "datasets": [
+    {
+      "dataset": "diamond_star_synthetic",
+      "n_total": 1000,
+      "n_train": 700,
+      "n_val": 150,
+      "n_test": 150,
+      "alphabet_size": 10,
+      "sequence_length": 10,
+      "models": {
+        "hard": {
+          "accuracy": 0.49333333333333335,
+          "precision": 0.46153846153846156,
+          "recall": 0.08,
+          "f1": 0.13636363636363635,
+          "auc": 0.49360000000000004,
+          "confusion_matrix": [
+            [
+              68,
+              7
+            ],
+            [
+              69,
+              6
+            ]
+          ]
+        },
+        "softmax": {
+          "accuracy": 0.5466666666666666,
+          "precision": 0.5353535353535354,
+          "recall": 0.7066666666666667,
+          "f1": 0.6091954022988506,
+          "auc": 0.5285333333333333,
+          "confusion_matrix": [
+            [
+              29,
+              46
+            ],
+            [
+              22,
+              53
+            ]
+          ]
+        },
+        "logistic_regression": {
+          "accuracy": 0.8333333333333334,
+          "precision": 0.8125,
+          "recall": 0.8666666666666667,
+          "f1": 0.8387096774193549,
+          "auc": 0.9299555555555555,
+          "confusion_matrix": [
+            [
+              60,
+              15
+            ],
+            [
+              10,
+              65
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "dataset": "uci_poker_subsample_3000",
+      "n_total": 3000,
+      "n_train": 2100,
+      "n_val": 450,
+      "n_test": 450,
+      "alphabet_size": 52,
+      "sequence_length": 5,
+      "models": {
+        "hard": {
+          "accuracy": 0.47555555555555556,
+          "precision": 0.4566929133858268,
+          "recall": 0.5420560747663551,
+          "f1": 0.49572649572649574,
+          "auc": 0.47076469190559167,
+          "confusion_matrix": [
+            [
+              98,
+              138
+            ],
+            [
+              98,
+              116
+            ]
+          ]
+        },
+        "softmax": {
+          "accuracy": 0.4666666666666667,
+          "precision": 0.4434782608695652,
+          "recall": 0.4766355140186916,
+          "f1": 0.4594594594594595,
+          "auc": 0.4655175827657215,
+          "confusion_matrix": [
+            [
+              108,
+              128
+            ],
+            [
+              112,
+              102
+            ]
+          ]
+        },
+        "logistic_regression": {
+          "accuracy": 0.5133333333333333,
+          "precision": 0.48878923766816146,
+          "recall": 0.5093457943925234,
+          "f1": 0.4988558352402746,
+          "auc": 0.48942658007286555,
+          "confusion_matrix": [
+            [
+              122,
+              114
+            ],
+            [
+              105,
+              109
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "dataset": "balanced_parentheses",
+      "n_total": 2000,
+      "n_train": 1400,
+      "n_val": 300,
+      "n_test": 300,
+      "alphabet_size": 2,
+      "sequence_length": 31,
+      "models": {
+        "hard": {
+          "accuracy": 0.7233333333333334,
+          "precision": 0.6294642857142857,
+          "recall": 1.0,
+          "f1": 0.7726027397260274,
+          "auc": 0.7389937106918238,
+          "confusion_matrix": [
+            [
+              76,
+              83
+            ],
+            [
+              0,
+              141
+            ]
+          ]
+        },
+        "softmax": {
+          "accuracy": 0.7233333333333334,
+          "precision": 0.6294642857142857,
+          "recall": 1.0,
+          "f1": 0.7726027397260274,
+          "auc": 0.8142646862036665,
+          "confusion_matrix": [
+            [
+              76,
+              83
+            ],
+            [
+              0,
+              141
+            ]
+          ]
+        },
+        "logistic_regression": {
+          "accuracy": 0.8133333333333334,
+          "precision": 0.7428571428571429,
+          "recall": 0.9219858156028369,
+          "f1": 0.8227848101265823,
+          "auc": 0.8883536286185825,
+          "confusion_matrix": [
+            [
+              114,
+              45
+            ],
+            [
+              11,
+              130
+            ]
+          ]
+        }
+      }
+    }
+  ]
+}
