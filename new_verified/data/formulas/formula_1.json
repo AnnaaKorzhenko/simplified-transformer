@@ -1,0 +1,42 @@
+{
+  "formula": [
+    [
+      [
+        "p6",
+        "p1",
+        "p5"
+      ]
+    ],
+    [
+      [
+        "p6",
+        "p3",
+        "p2"
+      ]
+    ]
+  ],
+  "metadata": {
+    "formula_id": 1,
+    "alphabet_size": 6,
+    "num_disjunctions": 2,
+    "num_conjunctions": 1,
+    "alphabet": [
+      "p1",
+      "p2",
+      "p3",
+      "p4",
+      "p5",
+      "p6"
+    ],
+    "sequence_length": 10,
+    "num_positive": 500,
+    "num_negative": 500,
+    "total_sequences": 1000,
+    "seed": 42,
+    "formula_string": "(\u00acp6 U (p1 \u2227 p5)) \u2228 (\u00acp6 U (p3 \u2227 p2))",
+    "formula_string_diamond_star": "\u2662\u22c6((\u00acp6 U (p1 \u2227 p5)) \u2228 (\u00acp6 U (p3 \u2227 p2)))",
+    "formula_string_mtl_compatible": "(\u00acp6 U (p1 \u2227 p5)) \u2228 (\u00acp6 U (p3 \u2227 p2))",
+    "diamond_star": true,
+    "label_verification_accuracy": 1.0
+  }
+}

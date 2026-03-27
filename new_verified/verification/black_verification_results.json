@@ -1,0 +1,11 @@
+{
+  "total_checked": 1000,
+  "correct": 1000,
+  "incorrect": 0,
+  "accuracy": 100.0,
+  "errors": [],
+  "verification_method": "BLACK CLI subprocess (full)",
+  "black_cli_used": true,
+  "black_formula": "((((!(p6))) U (((p1 || (O(Y(p1)))) && (p5 || (O(Y(p5))))))) || (((!(p6))) U (((p3 || (O(Y(p3)))) && (p2 || (O(Y(p2))))))))",
+  "wrap_diamond_star": false
+}
