@@ -62,6 +62,7 @@ def run_one_dataset(
     epochs_hard: int,
     epochs_soft: int,
     seed: int = 42,
+    num_layers_hard: int = 3,
 ) -> dict:
     X_train, y_train, X_val, y_val, X_test, y_test = split_dataset_three_way(
         dataset, train_size=0.7, val_size=0.15, test_size=0.15, random_state=seed
@@ -86,6 +87,7 @@ def run_one_dataset(
         sequence_length,
         epochs=epochs_hard,
         random_state=seed,
+        num_layers=num_layers_hard,
         X_val=X_val,
         y_val=y_val,
     )

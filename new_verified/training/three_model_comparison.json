@@ -1,0 +1,70 @@
+{
+  "splits": "70/15/15 train/val/test, seed 42",
+  "data_dir": "new_verified/data",
+  "formula_id": 1,
+  "epochs_hard": 100,
+  "epochs_soft": 100,
+  "num_layers_hard": 3,
+  "dataset": {
+    "dataset": "new_verified_diamond_star (alphabet\u22646, BLACK-verified)",
+    "n_total": 1000,
+    "n_train": 700,
+    "n_val": 150,
+    "n_test": 150,
+    "alphabet_size": 6,
+    "sequence_length": 10,
+    "models": {
+      "hard": {
+        "accuracy": 0.6,
+        "precision": 0.6086956521739131,
+        "recall": 0.56,
+        "f1": 0.5833333333333334,
+        "auc": 0.5918222222222222,
+        "confusion_matrix": [
+          [
+            48,
+            27
+          ],
+          [
+            33,
+            42
+          ]
+        ]
+      },
+      "softmax": {
+        "accuracy": 0.41333333333333333,
+        "precision": 0.4329896907216495,
+        "recall": 0.56,
+        "f1": 0.4883720930232558,
+        "auc": 0.5161777777777778,
+        "confusion_matrix": [
+          [
+            20,
+            55
+          ],
+          [
+            33,
+            42
+          ]
+        ]
+      },
+      "logistic_regression": {
+        "accuracy": 0.94,
+        "precision": 0.9230769230769231,
+        "recall": 0.96,
+        "f1": 0.9411764705882353,
+        "auc": 0.9836444444444444,
+        "confusion_matrix": [
+          [
+            69,
+            6
+          ],
+          [
+            3,
+            72
+          ]
+        ]
+      }
+    }
+  }
+}
