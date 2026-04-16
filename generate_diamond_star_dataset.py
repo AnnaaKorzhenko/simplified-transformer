@@ -16,10 +16,11 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 
-    # Reuse the existing generator implementation (keeps semantics consistent with your repo).
-    upstream_dir = os.path.join(os.path.dirname(__file__), "simplified-transformer-upstream", "ltl_formulas")
-    sys.path.insert(0, upstream_dir)
-    from formula_generator import (  # noqa: E402
+    # Use project ltl_formulas (canonical semantics; verification via verify_with_internal.py).
+    root = os.path.dirname(os.path.abspath(__file__))
+    if root not in sys.path:
+        sys.path.insert(0, root)
+    from ltl_formulas.formula_generator import (
         FormulaGenerator,
         SyntheticDataGenerator,
         FormulaEvaluator,

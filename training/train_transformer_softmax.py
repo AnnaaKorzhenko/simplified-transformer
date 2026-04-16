@@ -95,12 +95,14 @@ def train_transformer_soft(X_train: List[List[str]], y_train: List[int],
                            alphabet: List[str], sequence_length: int,
                            epochs: int = 100, learning_rate: float = 0.001,
                            random_state: int = 42,
+                           num_layers: int = 3,
                            X_val: List[List[str]] = None,
                            y_val: List[int] = None) -> Dict:
     """Train transformer with softmax attention (gradient descent with numerical gradients)."""
     model = SimplifiedTransformer(
         alphabet_size=len(alphabet),
         sequence_length=sequence_length,
+        L=num_layers,
         random_state=random_state
     )
     
@@ -218,7 +220,9 @@ def train_transformer_soft(X_train: List[List[str]], y_train: List[int],
         'f1': f1,
         'auc': auc,
         'confusion_matrix': cm.tolist(),
-        'y_pred_proba': y_pred_proba
+        'y_pred_proba': y_pred_proba,
+        'y_test': list(y_test),
+        'y_pred': y_pred,
     }
 
 

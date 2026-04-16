@@ -16,10 +16,10 @@
     ]
   ],
   "metadata": {
-    "formula_id": 1,
+    "formula_id": 6,
     "alphabet_size": 6,
     "num_disjunctions": 2,
-    "num_conjunctions": 2,
+    "num_conjunctions": 1,
     "alphabet": [
       "p1",
       "p2",
@@ -33,9 +33,9 @@
     "num_negative": 500,
     "total_sequences": 1000,
     "seed": 42,
-    "formula_string": "(\u00acp6 U ((\u22a4 U p1) \u2227 (\u22a4 U p5))) \u2228 (\u00acp6 U ((\u22a4 U p3) \u2227 (\u22a4 U p2)))",
-    "formula_string_diamond_star": "\u2662\u22c6((\u00acp6 U ((\u22a4 U p1) \u2227 (\u22a4 U p5))) \u2228 (\u00acp6 U ((\u22a4 U p3) \u2227 (\u22a4 U p2))))",
-    "formula_string_mtl_compatible": "(\u00acp6 U ((\u22a4 U p1) \u2227 (\u22a4 U p5))) \u2228 (\u00acp6 U ((\u22a4 U p3) \u2227 (\u22a4 U p2)))",
+    "formula_string": "(\u00acp6 U SeenPair(p1,p5)) \u2228 (\u00acp6 U SeenPair(p3,p2))",
+    "formula_string_diamond_star": "\u2662\u22c6((\u00acp6 U SeenPair(p1,p5)) \u2228 (\u00acp6 U SeenPair(p3,p2)))",
+    "formula_string_mtl_compatible": "(\u00acp6 U SeenPair(p1,p5)) \u2228 (\u00acp6 U SeenPair(p3,p2))",
     "diamond_star": true,
     "label_verification_accuracy": 1.0
   }

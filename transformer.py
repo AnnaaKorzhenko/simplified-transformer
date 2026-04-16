@@ -19,9 +19,12 @@ class SimplifiedTransformer(nn.Module):
     """
     Simplified Transformer for Boolean word classification as described in the PDF
     
-    The transformer takes an admissible word (ending with omega symbol) and outputs
-    a Boolean value True or False based on the first element of the feature vector
-    at the last position after processing through L layers.
+    The transformer processes an admissible word (optionally ending with a dedicated
+    end token). Following LLMsREs (finite words, §2), global satisfaction is
+    anchored at the first symbol position: w ⊨ φ iff w,1 ⊨ φ in 1-based indexing.
+    In 0-based tensor positions over the content prefix, the readout uses the
+    first position index 0 (first row of X after L layers), first feature
+    dimension, compared to threshold θ — aligned with begin-anchored ♢⋆ semantics.
     """
     
     def __init__(self, vocab_size, d_model, d_prime, num_layers, activation=F.relu, threshold=0.0):
@@ -123,8 +126,8 @@ class SimplifiedTransformer(nn.Module):
             output = self.O_layers[layer_idx](attended)
             X = self.activation(output) + X
         
-        # Return raw value from last position, first element
-        return X[:, -1, 0]
+        # Readout at first position (begin-anchored; LLMsREs §2: w ⊨ φ iff w,1 ⊨ φ).
+        return X[:, 0, 0]
     
     def forward(self, x):
         """

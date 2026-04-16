@@ -104,12 +104,14 @@ def train_transformer_hard(X_train: List[List[str]], y_train: List[int],
                            X_test: List[List[str]], y_test: List[int],
                            alphabet: List[str], sequence_length: int,
                            epochs: int = 100, random_state: int = 42,
+                           num_layers: int = 3,
                            X_val: List[List[str]] = None,
                            y_val: List[int] = None) -> Dict:
     """Train transformer with hard attention (evolutionary-style optimization)."""
     model = SimplifiedTransformer(
         alphabet_size=len(alphabet),
         sequence_length=sequence_length,
+        L=num_layers,
         random_state=random_state
     )
     
@@ -207,11 +209,13 @@ def train_transformer_hard(X_train: List[List[str]], y_train: List[int],
         'f1': f1,
         'auc': auc,
         'confusion_matrix': cm.tolist(),
-        'y_pred_proba': y_pred_proba
+        'y_pred_proba': y_pred_proba,
+        'y_test': list(y_test),
+        'y_pred': y_pred,
     }
 
 
-def train_on_dataset(dataset_dir: str, formula_id: int = 33, output_dir: str = None, epochs: int = None):
+def train_on_dataset(dataset_dir: str, formula_id: int = 33, output_dir: str = None, epochs: int = None, num_layers: int = 3):
     """Train transformer with hard attention on a dataset and save results."""
     print("=" * 80)
     print(f"Training Simplified Transformer (Hard Attention)")
@@ -232,6 +236,7 @@ def train_on_dataset(dataset_dir: str, formula_id: int = 33, output_dir: str = N
     print(f"Sequence length: {sequence_length}")
     print(f"Positive: {sum(1 for _, label in dataset if label == 1)}")
     print(f"Negative: {sum(1 for _, label in dataset if label == 0)}")
+    print(f"Layers: {num_layers}")
     print(f"Epochs: {epochs}\n")
     
     # Split dataset into train/val/test
@@ -246,7 +251,7 @@ def train_on_dataset(dataset_dir: str, formula_id: int = 33, output_dir: str = N
     print("Training Simplified Transformer (Hard Attention)...")
     result = train_transformer_hard(
         X_train, y_train, X_test, y_test, alphabet, sequence_length, 
-        epochs=epochs, random_state=42, X_val=X_val, y_val=y_val
+        epochs=epochs, random_state=42, num_layers=num_layers, X_val=X_val, y_val=y_val
     )
     
     # Print results
@@ -303,6 +308,7 @@ def train_on_dataset(dataset_dir: str, formula_id: int = 33, output_dir: str = N
             'train_samples': len(X_train),
             'val_samples': len(X_val),
             'test_samples': len(X_test),
+            'num_layers': num_layers,
             'epochs': epochs
         },
         'results': {

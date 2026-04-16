@@ -8,12 +8,16 @@ from collections import deque
 class FormulaGenerator:
     """
     Generates temporal logic formulas in the form:
-    Disjunction of Conjunctions of "not a until b and c"
+    disjunction of atoms ``(¬ a) U ((⊤ U b) ∧ (⊤ U c))'' (LLMsREs §3 surface
+    syntax for singleton witnesses ``(⊤ U x)''), where ``⊤ U x'' is the
+    standard future-until form for ``eventually x''. Externally this is encoded
+    as a single witness proposition SeenPair(b,c) for BLACK; evaluation matches
+    the conjunction at the completion index (LLMsREs-style finite trace).
     
     Parameters:
     - alphabet_size (pi): size of alphabet (or alphabet is provided)
     - num_disjunctions: number of disjunction clauses
-    - num_conjunctions: number of conjunction clauses per disjunction
+    - num_conjunctions: kept for backward compatibility; effectively forced to 1
     - alphabet: optional list of alphabet symbols 
             
     """
@@ -25,7 +29,8 @@ class FormulaGenerator:
         
         self.alphabet_size = alphabet_size
         self.num_disjunctions = num_disjunctions
-        self.num_conjunctions = num_conjunctions
+        # No conjunctions of until terms: keep one atom per disjunction clause.
+        self.num_conjunctions = 1
         
         if alphabet is not None:
             if len(alphabet) < alphabet_size:
@@ -37,33 +42,33 @@ class FormulaGenerator:
         
     def generate_formula(self) -> List[List[Tuple[str, str, str]]]:
         """
-        Generate a formula: list of disjunctions, each containing conjunctions.
-        Each conjunction is a tuple (a, b, c) representing "not a until b and c"
+        Generate a formula: list of disjunctions, each containing exactly one until atom.
+        Each atom is a tuple (a, b, c) for ``(¬a) U ((⊤ U b) ∧ (⊤ U c))''
+        (implemented as (¬a) U SeenPair(b,c) in tooling).
         
         Returns: List of lists of tuples
         """
         formula = []
         
         for _ in range(self.num_disjunctions):
-            disjunction_clause = []
-            for _ in range(self.num_conjunctions):
-                # Randomly select a, b, c from alphabet
-                a, b, c = random.sample(self.alphabet, 3)
-                disjunction_clause.append((a, b, c))
-            formula.append(disjunction_clause)
+            # Randomly select a, b, c from alphabet
+            a, b, c = random.sample(self.alphabet, 3)
+            formula.append([(a, b, c)])
         
         return formula
     
     def formula_to_string(self, formula: List[List[Tuple[str, str, str]]]) -> str:
         """
-        Convert formula to readable string representation
+        Convert formula to a readable string representation that matches
+        the actual label semantics.
         """
         disj_parts = []
         for conj_clause in formula:
-            conj_parts = []
-            for a, b, c in conj_clause:
-                conj_parts.append(f"(¬{a} U ({b} ∧ {c}))")
-            disj_parts.append("(" + " ∧ ".join(conj_parts) + ")")
+            if not conj_clause:
+                continue
+            # Enforce "no conjunctions": keep only one until atom per clause.
+            a, b, c = conj_clause[0]
+            disj_parts.append(f"(¬{a} U ((⊤ U {b}) ∧ (⊤ U {c})))")
         return " ∨ ".join(disj_parts)
 
 
@@ -76,18 +81,12 @@ class FormulaEvaluator:
     @staticmethod
     def evaluate_not_a_until_b_and_c(sequence: List[str], a: str, b: str, c: str) -> bool:
         """
-        Evaluate "not a until b and c"
-        This means: a does not appear in the sequence until both b and c are simultaneously true
-        (They must both appear, and we consider the position where both have appeared)
-        
-        In our sequence model (one symbol per position), "simultaneously true" means:
-        - Both b and c have appeared in the sequence
-        - The "simultaneous" position is the position where we've seen both (the later of the two)
-        
-        Returns True if:
-        - For all positions before the position where both b and c have appeared,
-          a is false at those positions
-        - If b and c are never both present, then a must never occur in the sequence
+        Evaluate ``(¬a) U (Seen(b) ∧ Seen(c))'' (stored as SeenPair(b,c)).
+
+        With one symbol per timestep, take i* = max(pos_b, pos_c) for first
+        occurrences of b,c. Then Seen(b)∧Seen(c) holds from step i* onward;
+        the until is satisfied at the start iff a ∉ w[0:i*] (paper: no a
+        strictly before the witness stage completes).
         
         Args:
             sequence: List of symbols (strings)
@@ -105,15 +104,12 @@ class FormulaEvaluator:
             if symbol == c and pos_c is None:
                 pos_c = i
         
-        # Check if both b and c appear
+        # Check if both witnesses appear.
         if pos_b is None or pos_c is None:
-            # b and c are never both present, so (b & c) is never True
-            # In MTL semantics, if the right-hand side of until is never True,
-            # the until formula is False (the condition is never satisfied)
+            # The witness event never occurs.
             return False
         
-        # The "simultaneous" position is the position where both have appeared
-        # (the later of the two positions)
+        # First position by which both witnesses have been seen.
         first_bc_position = max(pos_b, pos_c)
         
         # Check that a does not occur before first_bc_position
@@ -122,18 +118,19 @@ class FormulaEvaluator:
     @staticmethod
     def evaluate_conjunction(sequence: List[str], conj_clause: List[Tuple[str, str, str]]) -> bool:
         """
-        Evaluate a conjunction clause: all subformulas must be true
+        Evaluate one disjunction clause under no-conjunction semantics.
+        If legacy data contains multiple tuples in a clause, use the first one.
         """
-        return all(
-            FormulaEvaluator.evaluate_not_a_until_b_and_c(sequence, a, b, c)
-            for a, b, c in conj_clause
-        )
+        if not conj_clause:
+            return False
+        a, b, c = conj_clause[0]
+        return FormulaEvaluator.evaluate_not_a_until_b_and_c(sequence, a, b, c)
     
     @staticmethod
     def evaluate_formula(sequence: List[str], formula: List[List[Tuple[str, str, str]]]) -> bool:
         """
-        Evaluate a disjunction of conjunctions formula
-        Returns True if at least one disjunction clause is true
+        Evaluate a disjunction of until atoms.
+        Returns True if at least one disjunction clause is true.
         """
         return any(
             FormulaEvaluator.evaluate_conjunction(sequence, conj_clause)
@@ -175,10 +172,9 @@ class SyntheticDataGenerator:
         for i in range(length):
             sequence_list[i] = random.choice(self.alphabet)
         
-        # For each (a, b, c) in target clause, ensure constraint: "not a until b and c"
+        # For the chosen atom, enforce: "not a until SeenPair(b,c)".
         for a, b, c in target_clause:
-            # Place b and c early (within first 2/3 of sequence)
-            # For "simultaneously true" semantics, both must appear
+            # Place both witnesses early (within the first 2/3 of the sequence).
             max_pos = max(1, (2 * length) // 3)
             pos_b = random.randint(0, max_pos - 1) if length > 1 else 0
             pos_c = random.randint(0, max_pos - 1) if length > 1 else 0
@@ -190,10 +186,10 @@ class SyntheticDataGenerator:
             sequence_list[pos_b] = b
             sequence_list[pos_c] = c
             
-            # Find the position where both b and c have appeared (simultaneous position)
+            # First position by which both witnesses have appeared.
             first_bc = max(pos_b, pos_c)
             
-            # Ensure a does not appear before first_bc (the simultaneous position)
+            # Ensure a does not appear before that witness event.
             for i in range(first_bc):
                 if sequence_list[i] == a:
                     # Replace with a random symbol that's not a
@@ -245,7 +241,7 @@ class SyntheticDataGenerator:
             # Violate at least one constraint in this clause
             a, b, c = random.choice(conj_clause)
             
-            # Violation strategy: put a before both b and c have appeared (simultaneous position)
+            # Violation strategy: put a before the witness event can occur.
             # Place a early
             pos_a = random.randint(0, max(0, length // 3)) if length > 1 else 0
             sequence_list[pos_a] = a

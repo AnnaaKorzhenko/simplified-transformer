@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-Train simplified transformer (hard leftmost attention), softmax-attention variant,
-and logistic regression on the same splits for: diamond-star synthetic, UCI poker (subsample),
-and balanced parentheses.
+Train hard-attention simplified transformer, softmax-attention variant, and
+logistic regression (bag-of-position features) on the same splits for:
+diamond-star synthetic, UCI poker (subsample), and balanced parentheses.
 
-Writes results_three_models.json and plots under plots_three_models/.
+Writes JSON with metrics plus McNemar significance for each model pair on the
+same held-out test set. Plots under plots_two_models/ by default.
 """
 from __future__ import annotations
 
@@ -13,8 +14,11 @@ import csv
 import json
 import os
 import random
-from typing import List, Tuple
+from typing import Any, Dict, List, Tuple
 
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -22,6 +26,7 @@ from training.utils import split_dataset_three_way
 from training.train_transformer_hard import train_transformer_hard
 from training.train_transformer_softmax import train_transformer_soft
 from training.train_logistic_regression import train_logistic_regression
+from training.significance import mcnemar_chi2_paired
 from training.utils import load_single_dataset
 
 
@@ -54,6 +59,30 @@ def load_csv_tokens(
     return rows, alphabet, max_len
 
 
+def _pack_metrics(r: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "accuracy": float(r["accuracy"]),
+        "precision": float(r["precision"]),
+        "recall": float(r["recall"]),
+        "f1": float(r["f1"]),
+        "auc": float(r["auc"]),
+        "confusion_matrix": r["confusion_matrix"],
+    }
+
+
+def _significance_three_way(y_true: List[int], r_hard: dict, r_soft: dict, r_lr: dict) -> dict:
+    yt = list(y_true)
+    pairs = {
+        "hard_vs_softmax": mcnemar_chi2_paired(yt, r_hard["y_pred"], r_soft["y_pred"]),
+        "hard_vs_logistic": mcnemar_chi2_paired(yt, r_hard["y_pred"], r_lr["y_pred"]),
+        "softmax_vs_logistic": mcnemar_chi2_paired(yt, r_soft["y_pred"], r_lr["y_pred"]),
+    }
+    return {
+        "method": "McNemar chi-square (Yates), asymptotic p-value; same test examples",
+        "pairs": pairs,
+    }
+
+
 def run_one_dataset(
     name: str,
     dataset: List[Tuple[List[str], int]],
@@ -63,11 +92,12 @@ def run_one_dataset(
     epochs_soft: int,
     seed: int = 42,
     num_layers_hard: int = 3,
-) -> dict:
+) -> Tuple[dict, dict, dict, dict, List[int]]:
     X_train, y_train, X_val, y_val, X_test, y_test = split_dataset_three_way(
         dataset, train_size=0.7, val_size=0.15, test_size=0.15, random_state=seed
     )
-    out = {
+    y_list = list(y_test)
+    out: dict = {
         "dataset": name,
         "n_total": len(dataset),
         "n_train": len(X_train),
@@ -91,14 +121,7 @@ def run_one_dataset(
         X_val=X_val,
         y_val=y_val,
     )
-    out["models"]["hard"] = {
-        "accuracy": float(r_hard["accuracy"]),
-        "precision": float(r_hard["precision"]),
-        "recall": float(r_hard["recall"]),
-        "f1": float(r_hard["f1"]),
-        "auc": float(r_hard["auc"]),
-        "confusion_matrix": r_hard["confusion_matrix"],
-    }
+    out["models"]["hard"] = _pack_metrics(r_hard)
 
     print(f"\n{'='*60}\n{name}: softmax transformer\n{'='*60}")
     r_soft = train_transformer_soft(
@@ -114,14 +137,7 @@ def run_one_dataset(
         X_val=X_val,
         y_val=y_val,
     )
-    out["models"]["softmax"] = {
-        "accuracy": float(r_soft["accuracy"]),
-        "precision": float(r_soft["precision"]),
-        "recall": float(r_soft["recall"]),
-        "f1": float(r_soft["f1"]),
-        "auc": float(r_soft["auc"]),
-        "confusion_matrix": r_soft["confusion_matrix"],
-    }
+    out["models"]["softmax"] = _pack_metrics(r_soft)
 
     print(f"\n{'='*60}\n{name}: logistic regression\n{'='*60}")
     r_lr = train_logistic_regression(
@@ -135,27 +151,24 @@ def run_one_dataset(
         y_val=y_val,
         random_state=seed,
     )
-    out["models"]["logistic_regression"] = {
-        "accuracy": float(r_lr["accuracy"]),
-        "precision": float(r_lr["precision"]),
-        "recall": float(r_lr["recall"]),
-        "f1": float(r_lr["f1"]),
-        "auc": float(r_lr["auc"]),
-        "confusion_matrix": r_lr["confusion_matrix"],
-    }
-    return out, r_hard, r_soft, r_lr, y_test
+    out["models"]["logistic"] = _pack_metrics(r_lr)
+
+    out["significance_mcnemar"] = _significance_three_way(y_list, r_hard, r_soft, r_lr)
+
+    return out, r_hard, r_soft, r_lr, y_list
 
 
 def plot_metrics_bars(block: dict, out_path: str) -> None:
-    models = ["hard", "softmax", "logistic_regression"]
-    labels = ["Hard-attn\n(simplified)", "Softmax\n(transformer)", "Logistic\nregression"]
+    models = ["hard", "softmax", "logistic"]
+    labels = ["Hard-attn", "Softmax", "Logistic"]
     metrics = ["accuracy", "precision", "recall", "f1", "auc"]
     x = np.arange(len(metrics))
-    width = 0.25
-    fig, ax = plt.subplots(figsize=(10, 5))
+    width = 0.24
+    fig, ax = plt.subplots(figsize=(11, 5))
     for i, m in enumerate(models):
         vals = [block["models"][m][k] for k in metrics]
-        ax.bar(x + (i - 1) * width, vals, width, label=labels[i])
+        shift = (i - 1) * width
+        ax.bar(x + shift, vals, width, label=labels[i])
     ax.set_xticks(x)
     ax.set_xticklabels(["Acc.", "Prec.", "Rec.", "F1", "AUC"])
     ax.set_ylim(0, 1.05)
@@ -167,14 +180,21 @@ def plot_metrics_bars(block: dict, out_path: str) -> None:
     plt.close()
 
 
-def plot_roc_three(y_test, r_hard, r_soft, r_lr, title: str, out_path: str) -> None:
+def plot_roc_three(
+    y_test: List[int],
+    r_hard: dict,
+    r_soft: dict,
+    r_lr: dict,
+    title: str,
+    out_path: str,
+) -> None:
     from sklearn.metrics import roc_curve
 
     fig, ax = plt.subplots(figsize=(7, 6))
     curves = [
-        ("Hard-attn (simplified)", r_hard["y_pred_proba"], r_hard["auc"], "green"),
-        ("Softmax transformer", r_soft["y_pred_proba"], r_soft["auc"], "red"),
-        ("Logistic regression", r_lr["y_pred_proba"], r_lr["auc"], "blue"),
+        ("Hard-attn", r_hard["y_pred_proba"], r_hard["auc"], "green"),
+        ("Softmax", r_soft["y_pred_proba"], r_soft["auc"], "red"),
+        ("Logistic", r_lr["y_pred_proba"], r_lr["auc"], "blue"),
     ]
     for name, probs, auc, color in curves:
         fpr, tpr, _ = roc_curve(y_test, probs)
@@ -201,14 +221,19 @@ def main() -> None:
     parser.add_argument("--uci_max", type=int, default=5000, help="Max rows for UCI (speed)")
     parser.add_argument("--uci_csv", type=str, default="datasets_poker_uci/uci_pokerhand_binary_200k.csv")
     parser.add_argument("--parens_csv", type=str, default="balanced_parens.csv")
-    parser.add_argument("--out_dir", type=str, default="plots_three_models")
-    parser.add_argument("--json_out", type=str, default="results_three_models.json")
+    parser.add_argument("--out_dir", type=str, default="plots_two_models")
+    parser.add_argument(
+        "--json_out",
+        type=str,
+        default="results_three_models.json",
+        help="Also written: McNemar hard/softmax/logistic per dataset",
+    )
     args = parser.parse_args()
 
     root = os.path.dirname(os.path.abspath(__file__))
     os.chdir(root)
 
-    triples = []
+    triples: List[Tuple[dict, dict, dict, dict, List[int]]] = []
 
     # 1) Diamond-star
     _f, dataset, alphabet, seq_len = load_single_dataset("generated_diamond_star", 1)

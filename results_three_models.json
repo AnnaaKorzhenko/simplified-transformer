@@ -7,59 +7,88 @@
       "n_train": 700,
       "n_val": 150,
       "n_test": 150,
-      "alphabet_size": 10,
+      "alphabet_size": 6,
       "sequence_length": 10,
       "models": {
         "hard": {
-          "accuracy": 0.49333333333333335,
-          "precision": 0.46153846153846156,
-          "recall": 0.08,
-          "f1": 0.13636363636363635,
-          "auc": 0.49360000000000004,
+          "accuracy": 0.6,
+          "precision": 0.6086956521739131,
+          "recall": 0.56,
+          "f1": 0.5833333333333334,
+          "auc": 0.5918222222222222,
           "confusion_matrix": [
             [
-              68,
-              7
+              48,
+              27
             ],
             [
-              69,
-              6
+              33,
+              42
             ]
           ]
         },
         "softmax": {
-          "accuracy": 0.5466666666666666,
-          "precision": 0.5353535353535354,
-          "recall": 0.7066666666666667,
-          "f1": 0.6091954022988506,
-          "auc": 0.5285333333333333,
+          "accuracy": 0.41333333333333333,
+          "precision": 0.4329896907216495,
+          "recall": 0.56,
+          "f1": 0.4883720930232558,
+          "auc": 0.5161777777777778,
           "confusion_matrix": [
             [
-              29,
-              46
+              20,
+              55
             ],
             [
-              22,
-              53
+              33,
+              42
             ]
           ]
         },
-        "logistic_regression": {
-          "accuracy": 0.8333333333333334,
-          "precision": 0.8125,
-          "recall": 0.8666666666666667,
-          "f1": 0.8387096774193549,
-          "auc": 0.9299555555555555,
+        "logistic": {
+          "accuracy": 0.94,
+          "precision": 0.9230769230769231,
+          "recall": 0.96,
+          "f1": 0.9411764705882353,
+          "auc": 0.9836444444444444,
           "confusion_matrix": [
             [
-              60,
-              15
+              69,
+              6
             ],
             [
-              10,
-              65
+              3,
+              72
             ]
           ]
+        }
+      },
+      "significance_mcnemar": {
+        "method": "McNemar chi-square (Yates), asymptotic p-value; same test examples",
+        "pairs": {
+          "hard_vs_softmax": {
+            "n10": 28,
+            "n01": 0,
+            "discordant": 28,
+            "chi2_stat": 26.035714285714285,
+            "p_value_asymptotic": 1.6757981533038752e-07,
+            "significant_05": true
+          },
+          "hard_vs_logistic": {
+            "n10": 5,
+            "n01": 56,
+            "discordant": 61,
+            "chi2_stat": 40.98360655737705,
+            "p_value_asymptotic": 7.675573969152849e-11,
+            "significant_05": true
+          },
+          "softmax_vs_logistic": {
+            "n10": 5,
+            "n01": 84,
+            "discordant": 89,
+            "chi2_stat": 68.35955056179775,
+            "p_value_asymptotic": 6.812189206810544e-17,
+            "significant_05": true
+          }
         }
       }
     },
@@ -106,7 +135,7 @@
             ]
           ]
         },
-        "logistic_regression": {
+        "logistic": {
           "accuracy": 0.5133333333333333,
           "precision": 0.48878923766816146,
           "recall": 0.5093457943925234,
@@ -122,6 +151,35 @@
               109
             ]
           ]
+        }
+      },
+      "significance_mcnemar": {
+        "method": "McNemar chi-square (Yates), asymptotic p-value; same test examples",
+        "pairs": {
+          "hard_vs_softmax": {
+            "n10": 19,
+            "n01": 15,
+            "discordant": 34,
+            "chi2_stat": 0.2647058823529412,
+            "p_value_asymptotic": 0.3034527136089754,
+            "significant_05": false
+          },
+          "hard_vs_logistic": {
+            "n10": 109,
+            "n01": 126,
+            "discordant": 235,
+            "chi2_stat": 1.0893617021276596,
+            "p_value_asymptotic": 0.1483063391521561,
+            "significant_05": false
+          },
+          "softmax_vs_logistic": {
+            "n10": 110,
+            "n01": 131,
+            "discordant": 241,
+            "chi2_stat": 1.6597510373443984,
+            "p_value_asymptotic": 0.0988184708231014,
+            "significant_05": false
+          }
         }
       }
     },
@@ -168,7 +226,7 @@
             ]
           ]
         },
-        "logistic_regression": {
+        "logistic": {
           "accuracy": 0.8133333333333334,
           "precision": 0.7428571428571429,
           "recall": 0.9219858156028369,
@@ -184,6 +242,35 @@
               130
             ]
           ]
+        }
+      },
+      "significance_mcnemar": {
+        "method": "McNemar chi-square (Yates), asymptotic p-value; same test examples",
+        "pairs": {
+          "hard_vs_softmax": {
+            "n10": 0,
+            "n01": 0,
+            "discordant": 0,
+            "chi2_stat": 0.0,
+            "p_value_asymptotic": 1.0,
+            "significant_05": false
+          },
+          "hard_vs_logistic": {
+            "n10": 11,
+            "n01": 38,
+            "discordant": 49,
+            "chi2_stat": 13.795918367346939,
+            "p_value_asymptotic": 0.00010188922978075536,
+            "significant_05": true
+          },
+          "softmax_vs_logistic": {
+            "n10": 11,
+            "n01": 38,
+            "discordant": 49,
+            "chi2_stat": 13.795918367346939,
+            "p_value_asymptotic": 0.00010188922978075536,
+            "significant_05": true
+          }
         }
       }
     }

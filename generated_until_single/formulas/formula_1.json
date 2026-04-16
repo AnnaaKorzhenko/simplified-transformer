@@ -1,0 +1,40 @@
+{
+  "formula": [
+    [
+      [
+        "p6",
+        "p1"
+      ]
+    ],
+    [
+      [
+        "p1",
+        "p3"
+      ]
+    ]
+  ],
+  "metadata": {
+    "formula_id": 1,
+    "witness_mode": "until_single",
+    "alphabet_size": 6,
+    "num_disjunctions": 2,
+    "num_conjunctions": 1,
+    "alphabet": [
+      "p1",
+      "p2",
+      "p3",
+      "p4",
+      "p5",
+      "p6"
+    ],
+    "sequence_length": 10,
+    "num_positive": 500,
+    "num_negative": 500,
+    "total_sequences": 1000,
+    "seed": 42,
+    "formula_string": "(\u00acp6 U (\u22a4 U p1)) \u2228 (\u00acp1 U (\u22a4 U p3))",
+    "formula_string_diamond_star": "\u2662\u22c6((\u00acp6 U (\u22a4 U p1)) \u2228 (\u00acp1 U (\u22a4 U p3)))",
+    "diamond_star": true,
+    "label_verification_accuracy": 1.0
+  }
+}

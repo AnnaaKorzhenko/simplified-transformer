@@ -1,13 +1,13 @@
 """
-Helpers for the diamond-star (♢⋆) operator from LLMsREs_12.
+Helpers for the diamond-star (♢⋆) operator (LLMsREs_15.pdf §2).
 
 The paper defines:
-  ♢⋆(φ) := ( φ ∧ ¬(⊥ U− ⊤)) ∨ ⊤ U−(φ ∧ ¬(⊥ U− ⊤))
+  ♢⋆φ := (φ ∧ ¬(⊥ U− ⊤)) ∨ (⊤ U−(φ ∧ ¬(⊥ U− ⊤)))
 
-Intuition: ♢⋆(φ) is true at any time point iff φ is true at the first time point.
+(⊥ U− ⊤ holds only at the first position; so ♢⋆φ is true iff φ holds at the first position.)
 
-This repo mostly evaluates satisfaction at the beginning of the word (w |= φ iff w,1 |= φ).
-Under that convention, at time point 1 we have: ♢⋆(φ) ≡ φ.
+This repo evaluates satisfaction at the beginning of the word (w |= φ iff w,1 |= φ).
+Under that convention, at time point 1: ♢⋆(φ) ≡ φ.
 """
 
 from __future__ import annotations
