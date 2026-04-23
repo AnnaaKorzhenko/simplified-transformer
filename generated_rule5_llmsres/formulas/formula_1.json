@@ -1,0 +1,28 @@
+{
+  "formula": [],
+  "metadata": {
+    "alphabet": [
+      "p1",
+      "p2",
+      "p3",
+      "p4",
+      "p5",
+      "p6"
+    ],
+    "sequence_length": 10,
+    "formula_kind": "rule5_llmsres",
+    "rule5": {
+      "head": "p1",
+      "witness": "p2",
+      "beta_same_partition": [
+        "p3",
+        "p4"
+      ],
+      "never_symbols": [
+        "p5"
+      ]
+    },
+    "rule5_string": "p1 \u2227 \u2662\u22c6((\u00acp3 U p2) \u2227 (\u00acp4 U p2)) \u2227 \u2662\u22c6(\u00ac(\u22a4 U p5)) \u2192 s_{p1,p2}",
+    "description": "Synthetic rule (5): head at pos 0, \u2662\u22c6 conjuncts at trace start (see rule5_formula.py)."
+  }
+}

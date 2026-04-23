@@ -57,6 +57,14 @@ def generate_datasets(seed: int) -> None:
              "--num_positive", "500",
              "--num_negative", "500",
              "--seed", str(seed)])
+    run([py(), "generate_rule5_dataset.py",
+         "--output_dir", "generated_rule5_llmsres",
+         "--formula_id", "1",
+         "--alphabet_size", "6",
+         "--sequence_length", "10",
+         "--num_positive", "500",
+         "--num_negative", "500",
+         "--seed", str(seed)])
 
 
 # ---------------------------------------------------------------------------
@@ -248,6 +256,7 @@ def main() -> None:
         ("generated_pair_m3",   "Pair witness, m=3 disjuncts"),
         ("generated_single_m2", "Single witness, m=2 disjuncts"),
         ("generated_single_m3", "Single witness, m=3 disjuncts"),
+        ("generated_rule5_llmsres", "LLMsREs rule (5) style (head + ♢⋆ until + never)"),
     ]
 
     all_results: dict[str, dict] = {}

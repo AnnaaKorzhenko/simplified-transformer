@@ -1,0 +1,63 @@
+{
+  "source": "experiment_results/all_experiments.json (generated_rule5_llmsres block)",
+  "epochs": 80,
+  "seed": 42,
+  "formula_json": "generated_rule5_llmsres/formulas/formula_1.json",
+  "dataset_csv": "generated_rule5_llmsres/datasets/dataset_1.csv",
+  "rule5_string": "p1 ∧ ♢⋆((¬p3 U p2) ∧ (¬p4 U p2)) ∧ ♢⋆(¬(⊤ U p5)) → s_{p1,p2}",
+  "metrics": {
+    "dataset_dir": "generated_rule5_llmsres",
+    "formula_id": 1,
+    "alphabet_size": 6,
+    "sequence_length": 10,
+    "n_test": 150,
+    "hard_by_layer": {
+      "1": {
+        "accuracy": 0.5666666666666667,
+        "precision": 0.5357142857142857,
+        "recall": 1.0,
+        "f1": 0.6976744186046512,
+        "auc": 0.37297777777777774,
+        "confusion_matrix": [[10, 65], [0, 75]]
+      },
+      "2": {
+        "accuracy": 0.5666666666666667,
+        "precision": 0.5357142857142857,
+        "recall": 1.0,
+        "f1": 0.6976744186046512,
+        "auc": 0.5706666666666668,
+        "confusion_matrix": [[10, 65], [0, 75]]
+      },
+      "3": {
+        "accuracy": 0.6533333333333333,
+        "precision": 0.5905511811023622,
+        "recall": 1.0,
+        "f1": 0.7425742574257426,
+        "auc": 0.4524444444444445,
+        "confusion_matrix": [[23, 52], [0, 75]]
+      }
+    },
+    "softmax": {
+      "accuracy": 0.5666666666666667,
+      "precision": 0.5357142857142857,
+      "recall": 1.0,
+      "f1": 0.6976744186046512,
+      "auc": 0.3628444444444444,
+      "confusion_matrix": [[10, 65], [0, 75]]
+    },
+    "mcnemar_hard_vs_softmax": {
+      "best_hard_L": 3,
+      "n10": 13,
+      "n01": 0,
+      "discordant": 13,
+      "chi2_stat": 11.076923076923077,
+      "p_value_asymptotic": 0.000437043605649237,
+      "significant_05": true
+    }
+  },
+  "plots": [
+    "experiment_results/plots/layers_rule5_llmsres.png",
+    "experiment_results/plots/hard_vs_soft_rule5_llmsres.png",
+    "experiment_results/plots/roc_rule5_llmsres.png"
+  ]
+}

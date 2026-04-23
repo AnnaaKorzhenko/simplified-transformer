@@ -30,6 +30,8 @@ from torch.utils.data import DataLoader, Dataset
 
 from extractor import LTLExtractor
 from transformer import SimplifiedTransformer
+from ltl_formulas.formula_generator import sequence_satisfies_payload
+from ltl_formulas.rule5_formula import rule5_to_paper_string
 
 
 def set_seed(seed: int) -> None:
@@ -275,7 +277,8 @@ def main() -> None:
     with open(formula_path, "r", encoding="utf-8") as f:
         formula_payload = json.load(f)
     formula = formula_payload["formula"]
-    alphabet = formula_payload["metadata"]["alphabet"]
+    metadata = formula_payload["metadata"]
+    alphabet = metadata["alphabet"]
 
     seqs, labels = load_dataset_csv(dataset_path)
     split = make_split(len(seqs), args.seed)
@@ -322,7 +325,12 @@ def main() -> None:
     extracted_formula = extracted["formula"]
     extracted_ast = extracted.get("formula_ast")
 
-    synthetic_formula = synthetic_formula_to_string(formula)
+    if metadata.get("formula_kind") == "rule5_llmsres":
+        synthetic_formula = metadata.get("rule5_string") or rule5_to_paper_string(
+            metadata["rule5"]
+        )
+    else:
+        synthetic_formula = synthetic_formula_to_string(formula)
 
     # Semantic agreement on test split
     test_idx = split.test_idx
@@ -333,7 +341,7 @@ def main() -> None:
     for i in test_idx:
         s = seqs[i]
         y = labels[i]
-        y_syn = int(eval_synthetic_formula(s, formula))
+        y_syn = int(sequence_satisfies_payload(s, formula, metadata))
         y_ext = int(eval_ast_formula(s, extracted_ast)) if extracted_ast is not None else 0
         agree += int(y_syn == y_ext)
         syn_acc += int(y_syn == y)

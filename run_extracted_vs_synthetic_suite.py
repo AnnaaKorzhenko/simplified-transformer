@@ -15,6 +15,8 @@ from transformer import SimplifiedTransformer as TorchTransformer
 from training.train_transformer_hard import train_transformer_hard
 from training.train_transformer_softmax import train_transformer_soft
 from training.utils import split_dataset_three_way
+from ltl_formulas.formula_generator import sequence_satisfies_payload
+from ltl_formulas.rule5_formula import rule5_to_paper_string
 
 
 def normalize_formula(s: str) -> str:
@@ -180,9 +182,14 @@ def one_setting(
     extracted = extractor.extract_formula()
     extracted_formula = extracted["formula"]
     extracted_ast = extracted["formula_ast"]
-    synthetic_formula = synthetic_formula_to_string(formula)
+    if meta.get("formula_kind") == "rule5_llmsres":
+        synthetic_formula = meta.get("rule5_string") or rule5_to_paper_string(
+            meta["rule5"]
+        )
+    else:
+        synthetic_formula = synthetic_formula_to_string(formula)
 
-    syn_test = [int(eval_synthetic_formula(seq, formula)) for seq in X_test]
+    syn_test = [int(sequence_satisfies_payload(seq, formula, meta)) for seq in X_test]
     ext_test = [int(eval_ast_formula(seq, extracted_ast)) for seq in X_test]
     soft_test = [int(v) for v in soft["y_pred"]]
     hard_test = [int(v) for v in hard["y_pred"]]
@@ -249,6 +256,7 @@ def main() -> None:
         ("pair_m3", root / "generated_pair_m3" / "formulas" / "formula_1.json", root / "generated_pair_m3" / "datasets" / "dataset_1.csv"),
         ("single_m2", root / "generated_single_m2" / "formulas" / "formula_1.json", root / "generated_single_m2" / "datasets" / "dataset_1.csv"),
         ("single_m3", root / "generated_single_m3" / "formulas" / "formula_1.json", root / "generated_single_m3" / "datasets" / "dataset_1.csv"),
+        ("rule5_llmsres", root / "generated_rule5_llmsres" / "formulas" / "formula_1.json", root / "generated_rule5_llmsres" / "datasets" / "dataset_1.csv"),
     ]
 
     rows = []

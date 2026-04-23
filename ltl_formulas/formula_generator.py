@@ -138,6 +138,26 @@ class FormulaEvaluator:
         )
 
 
+def sequence_satisfies_payload(
+    sequence: List[str],
+    formula: List[List[Tuple[str, str, str]]],
+    metadata: dict,
+) -> bool:
+    """
+    Dispatch by metadata['formula_kind']: supports rule5_llmsres (see rule5_formula.py)
+    and the default pair-witness until formulas.
+    """
+    kind = (metadata or {}).get("formula_kind")
+    if kind == "rule5_llmsres":
+        from ltl_formulas.rule5_formula import evaluate_rule5_instance
+
+        rule = (metadata or {}).get("rule5")
+        if not rule:
+            return False
+        return evaluate_rule5_instance(sequence, rule)
+    return FormulaEvaluator.evaluate_formula(sequence, formula)
+
+
 class SyntheticDataGenerator:
     """
     Generates synthetic sequence data with labels based on formula satisfaction

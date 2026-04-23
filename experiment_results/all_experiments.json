@@ -1,0 +1,584 @@
+{
+  "protocol": "70/15/15 train/val/test",
+  "epochs": 80,
+  "seed": 42,
+  "architecture": "LLMsREs: leftmost hard-max, single-head, no positional enc, no masking, ReLU, readout X[0,0]",
+  "models": "hard-attention (L=1,2,3) and softmax-attention (L=3). NO logistic regression.",
+  "settings": {
+    "generated_pair_m2": {
+      "dataset_dir": "generated_pair_m2",
+      "formula_id": 1,
+      "alphabet_size": 6,
+      "sequence_length": 10,
+      "n_test": 150,
+      "hard_by_layer": {
+        "1": {
+          "accuracy": 0.41333333333333333,
+          "precision": 0.4329896907216495,
+          "recall": 0.56,
+          "f1": 0.4883720930232558,
+          "auc": 0.5488,
+          "confusion_matrix": [
+            [
+              20,
+              55
+            ],
+            [
+              33,
+              42
+            ]
+          ]
+        },
+        "2": {
+          "accuracy": 0.41333333333333333,
+          "precision": 0.4329896907216495,
+          "recall": 0.56,
+          "f1": 0.4883720930232558,
+          "auc": 0.5140444444444444,
+          "confusion_matrix": [
+            [
+              20,
+              55
+            ],
+            [
+              33,
+              42
+            ]
+          ]
+        },
+        "3": {
+          "accuracy": 0.6,
+          "precision": 0.6086956521739131,
+          "recall": 0.56,
+          "f1": 0.5833333333333334,
+          "auc": 0.5918222222222222,
+          "confusion_matrix": [
+            [
+              48,
+              27
+            ],
+            [
+              33,
+              42
+            ]
+          ]
+        }
+      },
+      "softmax": {
+        "accuracy": 0.41333333333333333,
+        "precision": 0.4329896907216495,
+        "recall": 0.56,
+        "f1": 0.4883720930232558,
+        "auc": 0.5161777777777778,
+        "confusion_matrix": [
+          [
+            20,
+            55
+          ],
+          [
+            33,
+            42
+          ]
+        ]
+      },
+      "mcnemar_layers": {
+        "method": "McNemar chi-square (Yates), asymptotic p-value, same test rows",
+        "pairs": {
+          "L1_vs_L2": {
+            "n10": 0,
+            "n01": 0,
+            "discordant": 0,
+            "chi2_stat": 0.0,
+            "p_value_asymptotic": 1.0,
+            "significant_05": false
+          },
+          "L1_vs_L3": {
+            "n10": 0,
+            "n01": 28,
+            "discordant": 28,
+            "chi2_stat": 26.035714285714285,
+            "p_value_asymptotic": 1.6757981533038752e-07,
+            "significant_05": true
+          },
+          "L2_vs_L3": {
+            "n10": 0,
+            "n01": 28,
+            "discordant": 28,
+            "chi2_stat": 26.035714285714285,
+            "p_value_asymptotic": 1.6757981533038752e-07,
+            "significant_05": true
+          }
+        }
+      },
+      "mcnemar_hard_vs_softmax": {
+        "best_hard_L": 3,
+        "n10": 28,
+        "n01": 0,
+        "discordant": 28,
+        "chi2_stat": 26.035714285714285,
+        "p_value_asymptotic": 1.6757981533038752e-07,
+        "significant_05": true
+      }
+    },
+    "generated_pair_m3": {
+      "dataset_dir": "generated_pair_m3",
+      "formula_id": 1,
+      "alphabet_size": 6,
+      "sequence_length": 10,
+      "n_test": 150,
+      "hard_by_layer": {
+        "1": {
+          "accuracy": 0.58,
+          "precision": 0.5612244897959183,
+          "recall": 0.7333333333333333,
+          "f1": 0.6358381502890174,
+          "auc": 0.6512,
+          "confusion_matrix": [
+            [
+              32,
+              43
+            ],
+            [
+              20,
+              55
+            ]
+          ]
+        },
+        "2": {
+          "accuracy": 0.58,
+          "precision": 0.5612244897959183,
+          "recall": 0.7333333333333333,
+          "f1": 0.6358381502890174,
+          "auc": 0.6550222222222221,
+          "confusion_matrix": [
+            [
+              32,
+              43
+            ],
+            [
+              20,
+              55
+            ]
+          ]
+        },
+        "3": {
+          "accuracy": 0.6066666666666667,
+          "precision": 0.5784313725490197,
+          "recall": 0.7866666666666666,
+          "f1": 0.6666666666666666,
+          "auc": 0.5567111111111112,
+          "confusion_matrix": [
+            [
+              32,
+              43
+            ],
+            [
+              16,
+              59
+            ]
+          ]
+        }
+      },
+      "softmax": {
+        "accuracy": 0.58,
+        "precision": 0.5612244897959183,
+        "recall": 0.7333333333333333,
+        "f1": 0.6358381502890174,
+        "auc": 0.6704888888888888,
+        "confusion_matrix": [
+          [
+            32,
+            43
+          ],
+          [
+            20,
+            55
+          ]
+        ]
+      },
+      "mcnemar_layers": {
+        "method": "McNemar chi-square (Yates), asymptotic p-value, same test rows",
+        "pairs": {
+          "L1_vs_L2": {
+            "n10": 0,
+            "n01": 0,
+            "discordant": 0,
+            "chi2_stat": 0.0,
+            "p_value_asymptotic": 1.0,
+            "significant_05": false
+          },
+          "L1_vs_L3": {
+            "n10": 0,
+            "n01": 4,
+            "discordant": 4,
+            "chi2_stat": 2.25,
+            "p_value_asymptotic": 0.06680720126885809,
+            "significant_05": false
+          },
+          "L2_vs_L3": {
+            "n10": 0,
+            "n01": 4,
+            "discordant": 4,
+            "chi2_stat": 2.25,
+            "p_value_asymptotic": 0.06680720126885809,
+            "significant_05": false
+          }
+        }
+      },
+      "mcnemar_hard_vs_softmax": {
+        "best_hard_L": 3,
+        "n10": 4,
+        "n01": 0,
+        "discordant": 4,
+        "chi2_stat": 2.25,
+        "p_value_asymptotic": 0.06680720126885809,
+        "significant_05": false
+      }
+    },
+    "generated_single_m2": {
+      "dataset_dir": "generated_single_m2",
+      "formula_id": 1,
+      "alphabet_size": 6,
+      "sequence_length": 10,
+      "n_test": 150,
+      "hard_by_layer": {
+        "1": {
+          "accuracy": 0.5333333333333333,
+          "precision": 0.5263157894736842,
+          "recall": 0.6666666666666666,
+          "f1": 0.5882352941176471,
+          "auc": 0.6444444444444444,
+          "confusion_matrix": [
+            [
+              30,
+              45
+            ],
+            [
+              25,
+              50
+            ]
+          ]
+        },
+        "2": {
+          "accuracy": 0.5333333333333333,
+          "precision": 0.5263157894736842,
+          "recall": 0.6666666666666666,
+          "f1": 0.5882352941176471,
+          "auc": 0.6306666666666667,
+          "confusion_matrix": [
+            [
+              30,
+              45
+            ],
+            [
+              25,
+              50
+            ]
+          ]
+        },
+        "3": {
+          "accuracy": 0.6066666666666667,
+          "precision": 1.0,
+          "recall": 0.21333333333333335,
+          "f1": 0.3516483516483517,
+          "auc": 0.5494222222222221,
+          "confusion_matrix": [
+            [
+              75,
+              0
+            ],
+            [
+              59,
+              16
+            ]
+          ]
+        }
+      },
+      "softmax": {
+        "accuracy": 0.5333333333333333,
+        "precision": 0.5263157894736842,
+        "recall": 0.6666666666666666,
+        "f1": 0.5882352941176471,
+        "auc": 0.6580444444444444,
+        "confusion_matrix": [
+          [
+            30,
+            45
+          ],
+          [
+            25,
+            50
+          ]
+        ]
+      },
+      "mcnemar_layers": {
+        "method": "McNemar chi-square (Yates), asymptotic p-value, same test rows",
+        "pairs": {
+          "L1_vs_L2": {
+            "n10": 0,
+            "n01": 0,
+            "discordant": 0,
+            "chi2_stat": 0.0,
+            "p_value_asymptotic": 1.0,
+            "significant_05": false
+          },
+          "L1_vs_L3": {
+            "n10": 34,
+            "n01": 45,
+            "discordant": 79,
+            "chi2_stat": 1.2658227848101267,
+            "p_value_asymptotic": 0.13027589390429367,
+            "significant_05": false
+          },
+          "L2_vs_L3": {
+            "n10": 34,
+            "n01": 45,
+            "discordant": 79,
+            "chi2_stat": 1.2658227848101267,
+            "p_value_asymptotic": 0.13027589390429367,
+            "significant_05": false
+          }
+        }
+      },
+      "mcnemar_hard_vs_softmax": {
+        "best_hard_L": 3,
+        "n10": 45,
+        "n01": 34,
+        "discordant": 79,
+        "chi2_stat": 1.2658227848101267,
+        "p_value_asymptotic": 0.13027589390429367,
+        "significant_05": false
+      }
+    },
+    "generated_single_m3": {
+      "dataset_dir": "generated_single_m3",
+      "formula_id": 1,
+      "alphabet_size": 6,
+      "sequence_length": 10,
+      "n_test": 150,
+      "hard_by_layer": {
+        "1": {
+          "accuracy": 0.7466666666666667,
+          "precision": 0.7761194029850746,
+          "recall": 0.6933333333333334,
+          "f1": 0.7323943661971831,
+          "auc": 0.6851555555555555,
+          "confusion_matrix": [
+            [
+              60,
+              15
+            ],
+            [
+              23,
+              52
+            ]
+          ]
+        },
+        "2": {
+          "accuracy": 0.7466666666666667,
+          "precision": 0.7761194029850746,
+          "recall": 0.6933333333333334,
+          "f1": 0.7323943661971831,
+          "auc": 0.6970666666666667,
+          "confusion_matrix": [
+            [
+              60,
+              15
+            ],
+            [
+              23,
+              52
+            ]
+          ]
+        },
+        "3": {
+          "accuracy": 0.7466666666666667,
+          "precision": 0.7761194029850746,
+          "recall": 0.6933333333333334,
+          "f1": 0.7323943661971831,
+          "auc": 0.6903111111111111,
+          "confusion_matrix": [
+            [
+              60,
+              15
+            ],
+            [
+              23,
+              52
+            ]
+          ]
+        }
+      },
+      "softmax": {
+        "accuracy": 0.7466666666666667,
+        "precision": 0.7761194029850746,
+        "recall": 0.6933333333333334,
+        "f1": 0.7323943661971831,
+        "auc": 0.7219555555555555,
+        "confusion_matrix": [
+          [
+            60,
+            15
+          ],
+          [
+            23,
+            52
+          ]
+        ]
+      },
+      "mcnemar_layers": {
+        "method": "McNemar chi-square (Yates), asymptotic p-value, same test rows",
+        "pairs": {
+          "L1_vs_L2": {
+            "n10": 0,
+            "n01": 0,
+            "discordant": 0,
+            "chi2_stat": 0.0,
+            "p_value_asymptotic": 1.0,
+            "significant_05": false
+          },
+          "L1_vs_L3": {
+            "n10": 0,
+            "n01": 0,
+            "discordant": 0,
+            "chi2_stat": 0.0,
+            "p_value_asymptotic": 1.0,
+            "significant_05": false
+          },
+          "L2_vs_L3": {
+            "n10": 0,
+            "n01": 0,
+            "discordant": 0,
+            "chi2_stat": 0.0,
+            "p_value_asymptotic": 1.0,
+            "significant_05": false
+          }
+        }
+      },
+      "mcnemar_hard_vs_softmax": {
+        "best_hard_L": 1,
+        "n10": 0,
+        "n01": 0,
+        "discordant": 0,
+        "chi2_stat": 0.0,
+        "p_value_asymptotic": 1.0,
+        "significant_05": false
+      }
+    },
+    "generated_rule5_llmsres": {
+      "dataset_dir": "generated_rule5_llmsres",
+      "formula_id": 1,
+      "alphabet_size": 6,
+      "sequence_length": 10,
+      "n_test": 150,
+      "hard_by_layer": {
+        "1": {
+          "accuracy": 0.5666666666666667,
+          "precision": 0.5357142857142857,
+          "recall": 1.0,
+          "f1": 0.6976744186046512,
+          "auc": 0.37297777777777774,
+          "confusion_matrix": [
+            [
+              10,
+              65
+            ],
+            [
+              0,
+              75
+            ]
+          ]
+        },
+        "2": {
+          "accuracy": 0.5666666666666667,
+          "precision": 0.5357142857142857,
+          "recall": 1.0,
+          "f1": 0.6976744186046512,
+          "auc": 0.5706666666666668,
+          "confusion_matrix": [
+            [
+              10,
+              65
+            ],
+            [
+              0,
+              75
+            ]
+          ]
+        },
+        "3": {
+          "accuracy": 0.6533333333333333,
+          "precision": 0.5905511811023622,
+          "recall": 1.0,
+          "f1": 0.7425742574257426,
+          "auc": 0.4524444444444445,
+          "confusion_matrix": [
+            [
+              23,
+              52
+            ],
+            [
+              0,
+              75
+            ]
+          ]
+        }
+      },
+      "softmax": {
+        "accuracy": 0.5666666666666667,
+        "precision": 0.5357142857142857,
+        "recall": 1.0,
+        "f1": 0.6976744186046512,
+        "auc": 0.3628444444444444,
+        "confusion_matrix": [
+          [
+            10,
+            65
+          ],
+          [
+            0,
+            75
+          ]
+        ]
+      },
+      "mcnemar_layers": {
+        "method": "McNemar chi-square (Yates), asymptotic p-value, same test rows",
+        "pairs": {
+          "L1_vs_L2": {
+            "n10": 0,
+            "n01": 0,
+            "discordant": 0,
+            "chi2_stat": 0.0,
+            "p_value_asymptotic": 1.0,
+            "significant_05": false
+          },
+          "L1_vs_L3": {
+            "n10": 0,
+            "n01": 13,
+            "discordant": 13,
+            "chi2_stat": 11.076923076923077,
+            "p_value_asymptotic": 0.000437043605649237,
+            "significant_05": true
+          },
+          "L2_vs_L3": {
+            "n10": 0,
+            "n01": 13,
+            "discordant": 13,
+            "chi2_stat": 11.076923076923077,
+            "p_value_asymptotic": 0.000437043605649237,
+            "significant_05": true
+          }
+        }
+      },
+      "mcnemar_hard_vs_softmax": {
+        "best_hard_L": 3,
+        "n10": 13,
+        "n01": 0,
+        "discordant": 13,
+        "chi2_stat": 11.076923076923077,
+        "p_value_asymptotic": 0.000437043605649237,
+        "significant_05": true
+      }
+    }
+  }
+}
